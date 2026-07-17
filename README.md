@@ -1,68 +1,46 @@
-\# FuelRadar
-
-
+FuelRadar
 
 A smart web application that helps drivers find nearby gas stations, check up-to-date fuel prices, and see real-time queue status (green / yellow / red) before they arrive.
 
+Team
 
+Azzah Haider (21-317) — CS
 
-\## Team
+Aisha Abdullah (21-319) — CS
 
-\- Azzah Haider (21-317) — CS
+Lugain Kamal (21-320) — CS
 
-\- Aisha Abdullah (21-319) — CS
+Problem Drivers waste time and fuel searching for open, affordable, low-queue gas stations. Station owners have no easy way to broadcast live prices and traffic to customers. FuelRadar connects the two with real-time updates.
 
-\- Lugain Kamal (21-320) — CS
+Who It's For?
 
+Drivers — find the cheapest nearby stations and check live wait times.
 
+Station Managers — manage their station profile, update prices/queue status instantly.
 
-\## Problem
+System Administrators — approve new stations, moderate feedback, oversee the platform.
 
-Drivers waste time and fuel searching for open, affordable, low-queue gas stations. Station owners have no easy way to broadcast live prices and traffic to customers. FuelRadar connects the two with real-time updates.
+Tech Stack Backend: Django (Python)
 
+Database: SQLite
 
+Frontend: HTML5, CSS3, Bootstrap 5
 
-\## Who It's For
+Interactivity: JavaScript, Fetch API / AJAX
 
-\- \*\*Drivers\*\* — find the cheapest nearby stations and check live wait times.
+Version Control: GitHub
 
-\- \*\*Station Managers\*\* — manage their station profile, update prices/queue status instantly.
+Core Features
 
-\- \*\*System Administrators\*\* — approve new stations, moderate feedback, oversee the platform.
+Role-based auth (Station Manager / Admin)
 
+Full CRUD on stations, fuel status, and queue status
 
+Live AJAX search & filtering by city/fuel availability
 
-\## Tech Stack
+Real-time station status updates without page reload
 
-| Layer | Choice |
-
-|---|---|
-
-| Backend | Django (Python) |
-
-| Database | SQLite |
-
-| Frontend | HTML5, CSS3, Bootstrap 5 |
-
-| Interactivity | JavaScript, Fetch API / AJAX |
-
-| Version Control | GitHub |
-
-
-
-\## Core Features
-
-\- Role-based auth (Driver / Station Manager / Admin)
-
-\- Full CRUD on stations, fuel status, and queue status
-
-\- Live AJAX search \& filtering by city/fuel availability
-
-\- Real-time station status updates without page reload
-
-
-
-\## Setup
+Setup
 
 git clone https://github.com/Azzah-Haider/FuelRadar-.git
 
@@ -70,15 +48,13 @@ cd FuelRadar-
 
 python -m venv venv
 
-venv\\Scripts\\activate
+venv\Scripts\activate
 
 pip install -r requirements.txt
 
 python manage.py migrate
 
 python manage.py runserver
-
-
 
 
 
