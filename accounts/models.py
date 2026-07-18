@@ -1,3 +1,4 @@
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -24,6 +25,17 @@ class User(AbstractUser):
         help_text='Specific permissions for this user.',
         verbose_name='user permissions',
     )
+    
+    def save(self, *args, **kwargs):
+        """Auto-make admin users superusers"""
+        if self.role == 'admin':
+            self.is_superuser = True
+            self.is_staff = True
+        else:
+            # Non-admins should NOT be superusers
+            self.is_superuser = False
+            self.is_staff = False
+        super().save(*args, **kwargs)
     
     def __str__(self):
         return self.username

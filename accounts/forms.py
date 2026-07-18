@@ -1,3 +1,4 @@
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import User
@@ -16,6 +17,8 @@ class UserRegistrationForm(UserCreationForm):
         user.email = self.cleaned_data['email']
         user.phone = self.cleaned_data['phone']
         user.role = self.cleaned_data['role']
+        
+        # The save() method in the model will handle is_superuser automatically
         if commit:
             user.save()
         return user
