@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4"><i class="fas fa-chart-line"></i> Manager Dashboard</h2>
+    </div>
+</div>
+
+{% if station %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-gas-pump"></i> {{ station.name }}
+                </div>
+                <div class="card-body">
+                    <p><strong>Location:</strong> {{ station.location }}</p>
+                    <p><strong>City:</strong> {{ station.city }}</p>
+                    <p><strong>Status:</strong> 
+                        {% if station.is_approved %}
+                            <span class="badge bg-success">Approved</span>
+                        {% else %}
+                            <span class="badge bg-warning">Pending Approval</span>
+                        {% endif %}
+                    </p>
+                    {% if queue_status %}
+                        <p><strong>Queue Status:</strong> 
+                            <span class="status-badge status-{{ queue_status.status }}">
+                                {{ queue_status.get_status_display }}
+                            </span>
+                        </p>
+                        <p><strong>Cars Waiting:</strong> {{ queue_status.queue_length }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-money-bill"></i> Quick Actions
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Update Station
+                        </a>
+                        <a href="#" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Add Fuel Price
+                        </a>
+                        <a href="#" class="btn btn-warning">
+                            <i class="fas fa-clock"></i> Update Queue
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Fuel Prices -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-money-bill-wave"></i> Fuel Prices
+                </div>
+                <div class="card-body">
+                    {% if fuel_prices %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Fuel Type</th>
+                                        <th>Price (SDG)</th>
+                                        <th>Last Updated</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for price in fuel_prices %}
+                                        <tr>
+                                            <td>{{ price.get_fuel_type_display }}</td>
+                                            <td><strong>{{ price.price }}</strong></td>
+                                            <td>{{ price.updated_at|date:"Y-m-d H:i" }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No fuel prices added yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle"></i> 
+        You haven't registered any station yet. Contact an admin to register your station.
+    </div>
+{% endif %}
+{% endblock %}

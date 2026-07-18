@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4"><i class="fas fa-map"></i> Driver Dashboard</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-gas-pump"></i> Nearby Stations
+            </div>
+            <div class="card-body">
+                {% if stations %}
+                    <div class="row g-4">
+                        {% for station in stations %}
+                            <div class="col-md-4">
+                                <div class="card station-card h-100">
+                                    <div class="card-body">
+                                        <h5 class="station-name">{{ station.name }}</h5>
+                                        <p class="station-location">
+                                            <i class="fas fa-map-marker-alt"></i> {{ station.location }}
+                                        </p>
+                                        <p class="station-location">
+                                            <i class="fas fa-city"></i> {{ station.city }}
+                                        </p>
+                                        {% if station.queue_status %}
+                                            <span class="status-badge status-{{ station.queue_status.status }}">
+                                                {{ station.queue_status.get_status_display }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">No stations available in your area.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

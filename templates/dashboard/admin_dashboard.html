@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4"><i class="fas fa-chart-line"></i> Admin Dashboard</h2>
+    </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-users" style="font-size: 2.5rem; color: #3498db;"></i>
+                <h3 class="mt-2">{{ total_users }}</h3>
+                <p class="text-muted">Total Users</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-gas-pump" style="font-size: 2.5rem; color: #2ecc71;"></i>
+                <h3 class="mt-2">{{ total_stations }}</h3>
+                <p class="text-muted">Total Stations</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-clock" style="font-size: 2.5rem; color: #f39c12;"></i>
+                <h3 class="mt-2">{{ pending_stations }}</h3>
+                <p class="text-muted">Pending Approval</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-money-bill" style="font-size: 2.5rem; color: #e74c3c;"></i>
+                <h3 class="mt-2">{{ total_fuel_prices }}</h3>
+                <p class="text-muted">Fuel Prices</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Stations -->
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-clock"></i> Recent Stations
+            </div>
+            <div class="card-body">
+                {% if recent_stations %}
+                    <ul class="list-group list-group-flush">
+                        {% for station in recent_stations %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ station.name }}
+                                <span class="badge {% if station.is_approved %}bg-success{% else %}bg-warning{% endif %}">
+                                    {% if station.is_approved %}Approved{% else %}Pending{% endif %}
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No stations added yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Users -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-users"></i> Recent Users
+            </div>
+            <div class="card-body">
+                {% if recent_users %}
+                    <ul class="list-group list-group-flush">
+                        {% for user in recent_users %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ user.username }}
+                                <span class="badge bg-info">{{ user.get_role_display }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No users registered yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-cog"></i> Quick Actions
+            </div>
+            <div class="card-body">
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="/admin/stations/station/" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Manage Stations
+                    </a>
+                    <a href="/admin/stations/fuelprice/" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Manage Fuel Prices
+                    </a>
+                    <a href="/admin/accounts/user/" class="btn btn-info">
+                        <i class="fas fa-users"></i> Manage Users
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
