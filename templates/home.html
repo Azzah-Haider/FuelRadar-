@@ -1,13 +1,105 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="text-center py-5">
-    <h1 class="display-4">⛽ Welcome to FuelRadar</h1>
-    <p class="lead">Find nearby gas stations, check fuel prices, and see real-time queue status.</p>
-    <hr class="my-4">
-    <div class="d-flex justify-content-center gap-3">
-        <a href="/accounts/login/" class="btn btn-primary btn-lg">Login</a>
-        <a href="/accounts/register/" class="btn btn-success btn-lg">Sign Up</a>
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1><i class="fas fa-gas-pump"></i> Welcome to FuelRadar</h1>
+                <p>Find nearby gas stations, check real-time fuel prices, and see queue status before you go!</p>
+                <div class="d-flex gap-3 mt-4 flex-wrap">
+                    {% if user.is_authenticated %}
+                        <a href="#" class="btn btn-light btn-lg">
+                            <i class="fas fa-map-marker-alt"></i> Find Stations
+                        </a>
+                    {% else %}
+                        <a href="{% url 'register' %}" class="btn btn-light btn-lg">
+                            <i class="fas fa-user-plus"></i> Get Started
+                        </a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Features Section -->
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card text-center h-100">
+            <div class="card-body py-4">
+                <i class="fas fa-search" style="font-size: 3rem; color: #3498db;"></i>
+                <h5 class="card-title mt-3">Find Stations</h5>
+                <p class="card-text text-muted">Search for gas stations near you with real-time availability.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center h-100">
+            <div class="card-body py-4">
+                <i class="fas fa-money-bill-wave" style="font-size: 3rem; color: #2ecc71;"></i>
+                <h5 class="card-title mt-3">Check Prices</h5>
+                <p class="card-text text-muted">Compare fuel prices across different stations instantly.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center h-100">
+            <div class="card-body py-4">
+                <i class="fas fa-clock" style="font-size: 3rem; color: #e74c3c;"></i>
+                <h5 class="card-title mt-3">Live Queue</h5>
+                <p class="card-text text-muted">See waiting times with green/yellow/red indicators.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Status Indicators Demo -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-traffic-light"></i> Queue Status Indicators
+            </div>
+            <div class="card-body">
+                <div class="d-flex gap-4 flex-wrap">
+                    <div>
+                        <span class="status-badge status-green">
+                            <i class="fas fa-check-circle"></i> No Queue
+                        </span>
+                        <span class="text-muted ms-2">(0-2 cars)</span>
+                    </div>
+                    <div>
+                        <span class="status-badge status-yellow">
+                            <i class="fas fa-clock"></i> Short Queue
+                        </span>
+                        <span class="text-muted ms-2">(3-8 cars, 5-10 min)</span>
+                    </div>
+                    <div>
+                        <span class="status-badge status-red">
+                            <i class="fas fa-exclamation-circle"></i> Long Queue
+                        </span>
+                        <span class="text-muted ms-2">(9+ cars, 15+ min)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if user.is_authenticated %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-success" role="alert">
+                <i class="fas fa-check-circle"></i> You're logged in as <strong>{{ user.username }}</strong> 
+                (Role: <span class="badge bg-primary">{{ user.get_role_display }}</span>)
+            </div>
+        </div>
+    </div>
+{% endif %}
+
 {% endblock %}
