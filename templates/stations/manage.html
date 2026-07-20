@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-7">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-edit"></i>Station Info
+            </div>
+            <div class="card-body p-4">
+                {% if not station.is_approved %}
+                    <div class="alert alert-danger">
+                        <i class="fas fa-clock"></i> Awaiting admin approval.
+                    </div>
+                {% endif %}
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </form>
+                <hr>
+                <a href="{% url 'stations:delete_station' station.pk %}" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Remove Station
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-gas-pump"></i>Fuel Prices
+            </div>
+            <div class="card-body p-4">
+                {% for fp in fuel_prices %}
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>{{ fp.get_fuel_type_display }}</span>
+                        <div>
+                            <strong>{{ fp.price }} SDG</strong>
+                            <a href="{% url 'stations:update_fuel_price' fp.pk %}" class="btn btn-sm btn-primary ms-2">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                            <a href="{% url 'stations:delete_fuel_price' fp.pk %}" class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-muted">No fuel prices added yet.</p>
+                {% endfor %}
+                <a href="{% url 'stations:add_fuel_price' %}" class="btn btn-success mt-2">
+                    <i class="fas fa-plus"></i> Add Fuel Price
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-traffic-light"></i>Queue Status
+            </div>
+            <div class="card-body p-4">
+                {% if queue_status %}
+                    <span class="status-badge status-{{ queue_status.status }}">
+                        {{ queue_status.get_status_display }}
+                    </span>
+                    <p class="text-muted mt-2">{{ queue_status.queue_length }} cars waiting</p>
+                {% else %}
+                    <p class="text-muted">Not set yet.</p>
+                {% endif %}
+                <a href="{% url 'stations:update_queue_status' %}" class="btn btn-primary mt-2">
+                    <i class="fas fa-sync"></i> Update Queue Status
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

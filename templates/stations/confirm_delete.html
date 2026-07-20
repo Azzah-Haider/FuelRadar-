@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-exclamation-triangle"></i>Confirm Delete
+            </div>
+            <div class="card-body p-4">
+                <p>
+                    Are you sure you want to delete
+                    {% if station %}<strong>{{ station.name }}</strong>{% endif %}
+                    {% if fuel_price %}<strong>{{ fuel_price.get_fuel_type_display }}</strong> for {{ fuel_price.station.name }}{% endif %}
+                    ? This cannot be undone.
+                </p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Yes, Delete
+                    </button>
+                    <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -33,10 +33,8 @@ class Station(models.Model):
 
 class FuelPrice(models.Model):
     FUEL_TYPES = (
-        ('petrol_91', 'Petrol 91'),
-        ('petrol_95', 'Petrol 95'),
+        ('petrol', 'Petrol'),
         ('diesel', 'Diesel'),
-        ('gas', 'CNG/LPG'),
     )
     
     station = models.ForeignKey(

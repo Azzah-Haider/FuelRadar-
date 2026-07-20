@@ -43,13 +43,13 @@
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
-                        <a href="#" class="btn btn-primary">
+                        <a href="{% url 'stations:manage_station' %}" class="btn btn-primary">
                             <i class="fas fa-edit"></i> Update Station
                         </a>
-                        <a href="#" class="btn btn-success">
+                        <a href="{% url 'stations:add_fuel_price' %}" class="btn btn-success">
                             <i class="fas fa-plus"></i> Add Fuel Price
                         </a>
-                        <a href="#" class="btn btn-warning">
+                        <a href="{% url 'stations:update_queue_status' %}" class="btn btn-warning">
                             <i class="fas fa-clock"></i> Update Queue
                         </a>
                     </div>
@@ -96,8 +96,11 @@
     </div>
 {% else %}
     <div class="alert alert-warning">
-        <i class="fas fa-exclamation-triangle"></i> 
-        You haven't registered any station yet. Contact an admin to register your station.
+        <i class="fas fa-exclamation-triangle"></i>
+        You haven't registered a station yet.
     </div>
+    <a href="{% url 'stations:register_station' %}" class="btn btn-success">
+        <i class="fas fa-plus"></i> Register Your Station
+    </a>
 {% endif %}
 {% endblock %}
