@@ -24,6 +24,13 @@
                             <span class="badge bg-warning">Pending Approval</span>
                         {% endif %}
                     </p>
+                    <p><strong>Services:</strong> 
+                        {% if station.services %}
+                           {{ station.services }}
+                        {% else %}
+                           <span class="text-muted">None added yet</span>
+                        {% endif %}
+                    </p>
                     {% if queue_status %}
                         <p><strong>Queue Status:</strong> 
                             <span class="status-badge status-{{ queue_status.status }}">
