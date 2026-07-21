@@ -10,6 +10,7 @@
             <div class="card-body">
                 <form method="post">
                     {% csrf_token %}
+                    <input type="hidden" name="station_id" value="{{ station.id }}">
                     {{ form.as_p }}
                     <div class="d-flex gap-2 mt-3">
                         <button type="submit" class="btn btn-warning-custom">

@@ -7,7 +7,6 @@
     </div>
 </div>
 
-<<<<<<< HEAD
 <!-- Quick Actions -->
 <div class="row mb-4">
     <div class="col-12">
@@ -34,24 +33,31 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-teal-header">
                         <i class="bi bi-fuel-pump"></i> {{ station.name }}
-  <span class="badge {% if station.is_approved %}bg-success{% else %}bg-warning{% endif %} text-white float-end">
-    {% if station.is_approved %}
-        <i class="bi bi-check-circle"></i> Approved
-    {% else %}
-        <i class="bi bi-clock"></i> Pending Approval
-    {% endif %}
-</span>
+                        <span class="badge bg-success text-white float-end">
+                            {% if station.is_approved %}
+                                <i class="bi bi-check-circle"></i> Approved
+                            {% else %}
+                                <i class="bi bi-clock"></i> Pending Approval
+                            {% endif %}
+                        </span>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <p><strong><i class="bi bi-geo-alt text-danger"></i> Location:</strong> {{ station.location }}</p>
-                                <p><strong><i class="bi bi-building text-info"></i> City:</strong> {{ station.city }}</p>
-                                <p><strong><i class="bi bi-telephone"></i> Phone:</strong> {{ station.contact_phone|default:"Not set" }}</p>
+                                <p class="text-dark"><strong><i class="bi bi-geo-alt text-danger"></i> Location:</strong> {{ station.location }}</p>
+                                <p class="text-dark"><strong><i class="bi bi-building text-info"></i> City:</strong> {{ station.city }}</p>
+                                <p class="text-dark"><strong><i class="bi bi-telephone"></i> Phone:</strong> {{ station.contact_phone|default:"Not set" }}</p>
                             </div>
                             <div class="col-md-6">
-                                <p><strong><i class="bi bi-clock"></i> Hours:</strong> {{ station.operating_hours|default:"Not set" }}</p>
-                                <p><strong><i class="bi bi-tools"></i> Services:</strong> {{ station.services|default:"None listed" }}</p>
+                                {% if station.operating_hours %}
+                                    <p class="text-dark"><strong><i class="bi bi-clock"></i> Hours:</strong> {{ station.operating_hours }}</p>
+                                {% endif %}
+                                {% if station.services %}
+                                    <p class="text-dark"><strong><i class="bi bi-tools"></i> Services:</strong> {{ station.services }}</p>
+                                {% endif %}
+                                {% if not station.operating_hours and not station.services %}
+                                    <p class="text-muted"><i class="bi bi-info-circle"></i> No additional information provided.</p>
+                                {% endif %}
                             </div>
                         </div>
                         
@@ -106,60 +112,6 @@
                                 <i class="bi bi-trash"></i> Delete
                             </a>
                         </div>
-=======
-{% if station %}
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-gas-pump"></i> {{ station.name }}
-                </div>
-                <div class="card-body">
-                    <p><strong>Location:</strong> {{ station.location }}</p>
-                    <p><strong>City:</strong> {{ station.city }}</p>
-                    <p><strong>Status:</strong> 
-                        {% if station.is_approved %}
-                            <span class="badge bg-success">Approved</span>
-                        {% else %}
-                            <span class="badge bg-warning">Pending Approval</span>
-                        {% endif %}
-                    </p>
-                    <p><strong>Services:</strong> 
-                        {% if station.services %}
-                           {{ station.services }}
-                        {% else %}
-                           <span class="text-muted">None added yet</span>
-                        {% endif %}
-                    </p>
-                    {% if queue_status %}
-                        <p><strong>Queue Status:</strong> 
-                            <span class="status-badge status-{{ queue_status.status }}">
-                                {{ queue_status.get_status_display }}
-                            </span>
-                        </p>
-                        <p><strong>Cars Waiting:</strong> {{ queue_status.queue_length }}</p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-money-bill"></i> Quick Actions
-                </div>
-                <div class="card-body">
-                    <div class="d-grid gap-2">
-                        <a href="{% url 'stations:manage_station' %}" class="btn btn-primary">
-                            <i class="fas fa-edit"></i> Update Station
-                        </a>
-                        <a href="{% url 'stations:add_fuel_price' %}" class="btn btn-success">
-                            <i class="fas fa-plus"></i> Add Fuel Price
-                        </a>
-                        <a href="{% url 'stations:update_queue_status' %}" class="btn btn-warning">
-                            <i class="fas fa-clock"></i> Update Queue
-                        </a>
->>>>>>> 4325fcac12587690b7aac25193aed142ef9c1976
                     </div>
                 </div>
             </div>
@@ -167,19 +119,12 @@
     </div>
 {% else %}
     <div class="alert alert-warning">
-<<<<<<< HEAD
         <i class="bi bi-exclamation-triangle"></i> 
         You haven't registered any stations yet. 
         <a href="{% url 'stations:create_station' %}" class="btn btn-teal btn-sm">
             <i class="bi bi-plus-circle"></i> Register Your First Station
         </a>
-=======
-        <i class="fas fa-exclamation-triangle"></i>
-        You haven't registered a station yet.
->>>>>>> 4325fcac12587690b7aac25193aed142ef9c1976
     </div>
-    <a href="{% url 'stations:register_station' %}" class="btn btn-success">
-        <i class="fas fa-plus"></i> Register Your Station
-    </a>
 {% endif %}
+
 {% endblock %}
