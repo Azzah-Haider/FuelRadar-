@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-gas-pump"></i>{{ station.name }}
+            </div>
+            <div class="card-body p-4">
+                <p><i class="fas fa-map-marker-alt"></i> {{ station.location }}, {{ station.city }}</p>
+                <p><i class="fas fa-clock"></i> {{ station.operating_hours }}</p>
+                <p><i class="fas fa-phone"></i> {{ station.contact_phone }}</p>
+                {% if station.services %}
+                    <p><i class="fas fa-concierge-bell"></i> {{ station.services }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card mb-4">
+            <div class="card-header"><i class="fas fa-gas-pump"></i>Fuel Prices</div>
+            <div class="card-body p-4">
+                {% for fp in fuel_prices %}
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>{{ fp.get_fuel_type_display }}</span>
+                        <strong>{{ fp.price }} SDG</strong>
+                    </div>
+                {% empty %}
+                    <p class="text-muted">No prices listed yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><i class="fas fa-traffic-light"></i>Queue Status</div>
+            <div class="card-body p-4">
+                {% if queue_status %}
+                    <span class="status-badge status-{{ queue_status.status }}">
+                        {{ queue_status.get_status_display }}
+                    </span>
+                    <p class="text-muted mt-2">{{ queue_status.queue_length }} cars waiting</p>
+                {% else %}
+                    <p class="text-muted">Not reported yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

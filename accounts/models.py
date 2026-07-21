@@ -31,10 +31,6 @@ class User(AbstractUser):
         if self.role == 'admin':
             self.is_superuser = True
             self.is_staff = True
-        else:
-            # Non-admins should NOT be superusers
-            self.is_superuser = False
-            self.is_staff = False
         super().save(*args, **kwargs)
     
     def __str__(self):

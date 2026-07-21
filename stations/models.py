@@ -32,8 +32,13 @@ class Station(models.Model):
 
 class FuelPrice(models.Model):
     FUEL_TYPES = (
+<<<<<<< HEAD
         ('banzen', 'Banzen'),
         ('gaz', 'Gaz'),
+=======
+        ('petrol', 'Petrol'),
+        ('diesel', 'Diesel'),
+>>>>>>> 4325fcac12587690b7aac25193aed142ef9c1976
     )
 
     
