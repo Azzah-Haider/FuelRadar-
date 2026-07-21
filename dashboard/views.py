@@ -28,6 +28,15 @@ def manager_dashboard(request):
     if request.user.role != 'manager':
         messages.error(request, 'You do not have access to the manager dashboard.')
         return redirect('home')
+
+ # Get ALL stations owned by this manager
+    stations = Station.objects.filter(manager=request.user)
+    
+    context = {
+        'stations': stations,
+    }
+    return render(request, 'dashboard/manager_dashboard.html', context)
+
     
     try:
         station = Station.objects.get(manager=request.user)

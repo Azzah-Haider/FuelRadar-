@@ -3,31 +3,27 @@
 {% block content %}
 <div class="row justify-content-center" style="min-height: 60vh; align-items: center;">
     <div class="col-md-5">
-        <div class="card shadow-lg">
-            <div class="card-header text-center">
-                <i class="fas fa-sign-in-alt" style="font-size: 1.5rem;"></i> Login to FuelRadar
+        <div class="card border-0 shadow-lg">
+            <div class="card-teal-header text-center">
+                <i class="bi bi-box-arrow-in-right" style="font-size: 1.5rem;"></i> Login to FuelRadar
             </div>
             <div class="card-body p-4">
                 <form method="post">
                     {% csrf_token %}
                     <div class="mb-3">
-                        <label class="form-label">
-                            <i class="fas fa-user"></i> Username
-                        </label>
+                        <label class="form-label"><i class="bi bi-person"></i> Username</label>
                         <input type="text" name="username" class="form-control" placeholder="Enter your username" required>
                     </div>
                     <div class="mb-4">
-                        <label class="form-label">
-                            <i class="fas fa-lock"></i> Password
-                        </label>
+                        <label class="form-label"><i class="bi bi-lock"></i> Password</label>
                         <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">
-                        <i class="fas fa-sign-in-alt"></i> Login
+                    <button type="submit" class="btn btn-teal w-100">
+                        <i class="bi bi-box-arrow-in-right"></i> Login
                     </button>
                 </form>
                 <p class="text-center mt-4 mb-0">
-                    Don't have an account? <a href="{% url 'register' %}" class="fw-bold">Sign Up</a>
+                    Don't have an account? <a href="{% url 'register' %}" class="fw-bold text-teal">Sign Up</a>
                 </p>
             </div>
         </div>

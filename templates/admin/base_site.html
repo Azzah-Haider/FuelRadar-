@@ -1,0 +1,118 @@
+{% extends "admin/base.html" %}
+
+{% load static %}
+
+{% block title %}{{ title }} | FuelRadar Admin{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'css/admin-custom.css' %}">
+<style>
+    * {
+        font-family: 'Poppins', sans-serif !important;
+    }
+    
+    #header {
+        background: #134E4A !important;
+        padding: 15px 30px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+    
+    #branding h1 {
+        color: white !important;
+        font-weight: 700 !important;
+        font-size: 1.5rem !important;
+    }
+    
+    #branding h1 a {
+        color: white !important;
+        text-decoration: none !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+    }
+    
+    #branding h1 a:before {
+        content: "⛽";
+        font-size: 1.8rem;
+    }
+    
+    #user-tools {
+        color: rgba(255,255,255,0.85) !important;
+    }
+    
+    #user-tools a {
+        color: #5EEAD4 !important;
+        font-weight: 500 !important;
+        padding: 6px 14px !important;
+        border-radius: 8px !important;
+        transition: all 0.3s !important;
+    }
+    
+    #user-tools a:hover {
+        background: rgba(94, 234, 212, 0.15) !important;
+        color: white !important;
+    }
+    
+    .breadcrumbs {
+        background: #134E4A !important;
+        color: white !important;
+        padding: 12px 30px !important;
+    }
+    
+    .breadcrumbs a {
+        color: #5EEAD4 !important;
+    }
+    
+    .breadcrumbs a:hover {
+        color: white !important;
+    }
+    
+    .module h2, .module caption {
+        background: #009688 !important;
+        color: white !important;
+        padding: 14px 20px !important;
+        font-weight: 600 !important;
+        border-radius: 12px 12px 0 0 !important;
+    }
+    
+    .button, input[type="submit"], input[type="button"], .submit-row input {
+        background: #009688 !important;
+        border: none !important;
+        border-radius: 10px !important;
+        padding: 10px 24px !important;
+        font-weight: 600 !important;
+        transition: all 0.3s !important;
+    }
+    
+    .button:hover, input[type="submit"]:hover {
+        background: #00796B !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 25px rgba(0, 150, 136, 0.3) !important;
+    }
+    
+    .button.default, input[type="submit"].default {
+        background: #10B981 !important;
+    }
+    
+    .button.default:hover {
+        background: #059669 !important;
+    }
+    
+    .button:active, input[type="submit"]:active {
+        transform: scale(0.98) !important;
+    }
+</style>
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        FuelRadar Admin
+    </a>
+</h1>
+{% endblock %}

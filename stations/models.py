@@ -30,14 +30,12 @@ class Station(models.Model):
         verbose_name = 'Gas Station'
         verbose_name_plural = 'Gas Stations'
 
-
 class FuelPrice(models.Model):
     FUEL_TYPES = (
-        ('petrol_91', 'Petrol 91'),
-        ('petrol_95', 'Petrol 95'),
-        ('diesel', 'Diesel'),
-        ('gas', 'CNG/LPG'),
+        ('banzen', 'Banzen'),
+        ('gaz', 'Gaz'),
     )
+
     
     station = models.ForeignKey(
         Station, 

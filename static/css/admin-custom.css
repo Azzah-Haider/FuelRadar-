@@ -1,0 +1,285 @@
+/* ===== FuelRadar Admin Custom Theme ===== */
+
+/* Login Page */
+.login {
+    background: linear-gradient(135deg, #134E4A 0%, #009688 50%, #0D9488 100%);
+}
+
+.login .container {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    padding: 40px;
+}
+
+.login .form-row {
+    padding: 12px 0;
+}
+
+.login input[type="submit"] {
+    background: #009688 !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 12px 30px !important;
+    font-weight: 600 !important;
+}
+
+.login input[type="submit"]:hover {
+    background: #00796B !important;
+}
+
+/* Navbar */
+#header {
+    background: #134E4A !important;
+    padding: 15px 20px !important;
+}
+
+#header h1 {
+    color: white !important;
+    font-weight: 700 !important;
+}
+
+#header h1 a {
+    color: white !important;
+}
+
+#header #branding h1 a:before {
+    content: "⛽ ";
+}
+
+/* Module Headers */
+.module h2, .module caption {
+    background: #009688 !important;
+    color: white !important;
+    padding: 12px 20px !important;
+    font-weight: 600 !important;
+}
+
+/* Buttons */
+.button, input[type="submit"], input[type="button"], .submit-row input, a.button {
+    background: #009688 !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
+    font-weight: 600 !important;
+}
+
+.button:hover, input[type="submit"]:hover {
+    background: #00796B !important;
+}
+
+.button.default, input[type="submit"].default {
+    background: #10B981 !important;
+}
+
+.button.default:hover {
+    background: #059669 !important;
+}
+
+.button.warning {
+    background: #F59E0B !important;
+}
+
+.button.warning:hover {
+    background: #D97706 !important;
+}
+
+.button.danger {
+    background: #EF4444 !important;
+}
+
+.button.danger:hover {
+    background: #DC2626 !important;
+}
+
+/* Links */
+a:link, a:visited {
+    color: #009688 !important;
+}
+
+a:hover {
+    color: #00796B !important;
+}
+
+/* Object Tools */
+.object-tools a {
+    background: #009688 !important;
+    border-radius: 8px !important;
+    padding: 8px 16px !important;
+}
+
+.object-tools a:hover {
+    background: #00796B !important;
+}
+
+/* Tables */
+#changelist table thead th {
+    background: #F8FAFC !important;
+    color: #1F2937 !important;
+    font-weight: 600 !important;
+}
+
+#changelist table tbody tr:hover {
+    background: #F0FDF4 !important;
+}
+
+#changelist table tbody tr.selected {
+    background: #D1FAE5 !important;
+}
+
+/* Pagination */
+.paginator a:link, .paginator a:visited {
+    background: #009688 !important;
+    color: white !important;
+    border-radius: 6px !important;
+    padding: 4px 12px !important;
+}
+
+.paginator a:hover {
+    background: #00796B !important;
+}
+
+.paginator .this-page {
+    background: #134E4A !important;
+    color: white !important;
+    border-radius: 6px !important;
+}
+
+/* Filters */
+#changelist-filter {
+    background: #F8FAFC !important;
+    border-radius: 12px !important;
+    border: 1px solid #E5E7EB !important;
+}
+
+#changelist-filter h3 {
+    background: #009688 !important;
+    color: white !important;
+    padding: 10px 16px !important;
+    border-radius: 12px 12px 0 0 !important;
+}
+
+#changelist-filter a:link, #changelist-filter a:visited {
+    color: #1F2937 !important;
+}
+
+#changelist-filter a:hover {
+    color: #009688 !important;
+}
+
+#changelist-filter li.selected a {
+    color: #009688 !important;
+    font-weight: 600 !important;
+}
+
+/* Dashboard */
+.dashboard .module table th {
+    background: #134E4A !important;
+    color: white !important;
+}
+
+.dashboard .module table td a {
+    color: #009688 !important;
+}
+
+/* Breadcrumbs */
+div.breadcrumbs {
+    background: #134E4A !important;
+    color: white !important;
+    padding: 10px 20px !important;
+}
+
+div.breadcrumbs a {
+    color: #5EEAD4 !important;
+}
+
+div.breadcrumbs a:hover {
+    color: white !important;
+}
+
+/* Messages */
+.success {
+    background: #D1FAE5 !important;
+    color: #065F46 !important;
+    border-left: 5px solid #10B981 !important;
+    border-radius: 8px !important;
+}
+
+.errorlist {
+    background: #FEE2E2 !important;
+    color: #991B1B !important;
+    border-left: 5px solid #EF4444 !important;
+    border-radius: 8px !important;
+}
+
+.warning {
+    background: #FEF3C7 !important;
+    color: #92400E !important;
+    border-left: 5px solid #F59E0B !important;
+    border-radius: 8px !important;
+}
+
+/* Action Buttons */
+.selector-chosen h2 {
+    background: #009688 !important;
+    color: white !important;
+}
+
+/* Help Text */
+.help, p.help {
+    color: #6B7280 !important;
+}
+
+/* Form Row Labels */
+.aligned label {
+    color: #1F2937 !important;
+    font-weight: 600 !important;
+}
+
+/* Footer */
+#footer {
+    background: #134E4A !important;
+    color: white !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 767px) {
+    #header {
+        padding: 10px !important;
+    }
+    
+    .login .container {
+        padding: 20px !important;
+        margin: 20px !important;
+    }
+}
+
+/* ===== BUTTON TEXT COLOR FIX ===== */
+.button, input[type="submit"], input[type="button"], .submit-row input, a.button {
+    color: #FFFFFF !important;
+}
+
+.button:visited, input[type="submit"]:visited {
+    color: #FFFFFF !important;
+}
+
+.button.default, input[type="submit"].default {
+    color: #FFFFFF !important;
+}
+
+.button.warning, input[type="submit"].warning {
+    color: #FFFFFF !important;
+}
+
+.button.danger, input[type="submit"].danger {
+    color: #FFFFFF !important;
+}
+
+/* Fix for any white text on white background */
+.object-tools a {
+    color: #FFFFFF !important;
+}
+
+.object-tools a:visited {
+    color: #FFFFFF !important;
+}

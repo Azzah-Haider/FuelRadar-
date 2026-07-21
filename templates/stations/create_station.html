@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-teal-header">
+                <i class="bi bi-plus-circle"></i> Register Your Station
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Fill in the details below to register your gas station. An admin will need to approve it before it appears publicly.</p>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="d-flex gap-2 mt-3">
+                        <button type="submit" class="btn btn-teal">
+                            <i class="bi bi-save"></i> Register Station
+                        </button>
+                        <a href="{% url 'manager_dashboard' %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Back
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -3,9 +3,9 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # ← THIS MUST BE EXACT
+    path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('accounts/', include('accounts.urls')),
-    path('stations/', include('stations.urls')),
+    path('stations/', include('stations.urls')),  
     path('dashboard/', include('dashboard.urls')),
 ]
