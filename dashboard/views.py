@@ -1,16 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from accounts.models import User
 from stations.models import Station, FuelPrice, QueueStatus
 
+
 @login_required
 def admin_dashboard(request):
-    """Admin Dashboard - Shows all stations, users, and stats"""
     if request.user.role != 'admin':
         messages.error(request, 'You do not have access to the admin dashboard.')
         return redirect('home')
-    
+
     context = {
         'total_users': User.objects.count(),
         'total_stations': Station.objects.count(),
@@ -22,51 +22,46 @@ def admin_dashboard(request):
     }
     return render(request, 'dashboard/admin_dashboard.html', context)
 
+
 @login_required
 def manager_dashboard(request):
-    """Manager Dashboard - Shows their station details"""
     if request.user.role != 'manager':
         messages.error(request, 'You do not have access to the manager dashboard.')
         return redirect('home')
 
- # Get ALL stations owned by this manager
     stations = Station.objects.filter(manager=request.user)
-    
+
     context = {
         'stations': stations,
     }
     return render(request, 'dashboard/manager_dashboard.html', context)
 
-    
-    try:
-        station = Station.objects.get(manager=request.user)
-        fuel_prices = FuelPrice.objects.filter(station=station)
-        queue_status = QueueStatus.objects.filter(station=station).first()
-        
-        context = {
-            'station': station,
-            'fuel_prices': fuel_prices,
-            'queue_status': queue_status,
-        }
-    except Station.DoesNotExist:
-        context = {
-            'station': None,
-            'fuel_prices': [],
-            'queue_status': None,
-        }
-    
-    return render(request, 'dashboard/manager_dashboard.html', context)
 
 @login_required
 def driver_dashboard(request):
-    """Driver Dashboard - Shows stations near them"""
     if request.user.role != 'driver':
         messages.error(request, 'You do not have access to the driver dashboard.')
         return redirect('home')
-    
-    stations = Station.objects.filter(is_approved=True)[:10]
-    
+
+    total_stations = Station.objects.filter(is_approved=True).count()
+    green_stations_count = QueueStatus.objects.filter(status='green', station__is_approved=True).count()
+
+    stations = Station.objects.filter(is_approved=True)
+    stations_with_details = []
+
+    for station in stations:
+        queue_status = QueueStatus.objects.filter(station=station).first()
+        fuel_prices = FuelPrice.objects.filter(station=station)
+
+        stations_with_details.append({
+            'station': station,
+            'queue_status': queue_status,
+            'fuel_prices': fuel_prices,
+        })
+
     context = {
-        'stations': stations,
+        'total_stations': total_stations,
+        'green_stations_count': green_stations_count,
+        'stations_with_details': stations_with_details,
     }
     return render(request, 'dashboard/driver_dashboard.html', context)

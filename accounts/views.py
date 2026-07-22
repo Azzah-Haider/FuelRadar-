@@ -1,8 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from .forms import UserRegistrationForm
+
+def redirect_based_on_role(user):
+    role = getattr(user, 'role', 'driver')
+    if role == 'admin':
+        return redirect('admin_dashboard')
+    elif role == 'manager':
+        return redirect('manager_dashboard')
+    else:
+        return redirect('driver_dashboard')
 
 def register(request):
     if request.method == 'POST':
@@ -11,7 +19,7 @@ def register(request):
             user = form.save()
             login(request, user)
             messages.success(request, 'Registration successful!')
-            return redirect('home')
+            return redirect_based_on_role(user)
         else:
             messages.error(request, 'Please correct the errors below.')
     else:
@@ -26,7 +34,7 @@ def login_view(request):
         if user is not None:
             login(request, user)
             messages.success(request, 'Logged in successfully!')
-            return redirect('home')
+            return redirect_based_on_role(user)
         else:
             messages.error(request, 'Invalid username or password.')
     return render(request, 'login.html')

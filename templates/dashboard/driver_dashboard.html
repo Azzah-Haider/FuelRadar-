@@ -1,47 +1,240 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<div class="row">
-    <div class="col-12">
-        <h2 class="mb-4"><i class="fas fa-map"></i> Driver Dashboard</h2>
-    </div>
-</div>
+{% block title %}Driver Dashboard - FuelRadar{% endblock %}
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-gas-pump"></i> Nearby Stations
+{% block content %}
+<style>
+    .station-hover-card {
+        border: 1px solid #e2e8f0 !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-top: 5px solid #116963 !important;
+    }
+    .station-hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(17, 105, 99, 0.18) !important;
+        border-color: #116963 !important;
+    }
+    .btn-custom-primary {
+        background-color: #116963;
+        color: white;
+        border: none;
+    }
+    .btn-custom-primary:hover {
+        background-color: #0d524d;
+        color: white;
+    }
+    .btn-custom-secondary {
+        background-color: #f1f5f9;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+    }
+    .btn-custom-secondary:hover {
+        background-color: #e2e8f0;
+        color: #1e293b;
+    }
+    .star-rating i {
+        font-size: 1.5rem;
+        color: #cbd5e1;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    .star-rating i:hover,
+    .star-rating i.selected {
+        color: #f59e0b;
+    }
+</style>
+
+<div class="container py-4">
+    <!-- Header Banner -->
+    <div class="d-flex justify-content-between align-items-center mb-4 p-4 text-white rounded-4 shadow-sm" style="background-color: #116963;">
+        <div>
+            <h2 class="fw-bold mb-1">Welcome, {{ request.user.username }} 👋</h2>
+           
+        </div>
+        <a href="/" class="btn btn-light rounded-pill px-4 fw-semibold" style="color: #116963;">
+            <i class="fas fa-map-marked-alt me-1"></i> View Map
+        </a>
+    </div>
+
+    <!-- Quick Stats Section -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm rounded-4 text-center p-3">
+                <div class="mb-2 fs-3" style="color: #116963;"><i class="fas fa-gas-pump"></i></div>
+                <h6 class="text-muted fw-normal mb-1">Active Stations</h6>
+                <h3 class="fw-bold mb-0" style="color: #116963;">{{ total_stations }}</h3>
             </div>
-            <div class="card-body">
-                {% if stations %}
-                    <div class="row g-4">
-                        {% for station in stations %}
-                            <div class="col-md-4">
-                                <div class="card station-card h-100">
-                                    <div class="card-body">
-                                        <h5 class="station-name">{{ station.name }}</h5>
-                                        <p class="station-location">
-                                            <i class="fas fa-map-marker-alt"></i> {{ station.location }}
-                                        </p>
-                                        <p class="station-location">
-                                            <i class="fas fa-city"></i> {{ station.city }}
-                                        </p>
-                                        {% if station.queue_status %}
-                                            <span class="status-badge status-{{ station.queue_status.status }}">
-                                                {{ station.queue_status.get_status_display }}
-                                            </span>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    <p class="text-muted">No stations available in your area.</p>
-                {% endif %}
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm rounded-4 text-center p-3">
+                <div class="mb-2 fs-3 text-success"><i class="fas fa-check-circle"></i></div>
+                <h6 class="text-muted fw-normal mb-1">Clear Stations (No Queue)</h6>
+                <h3 class="fw-bold mb-0 text-success">{{ green_stations_count }}</h3>
             </div>
         </div>
     </div>
+
+    <!-- Quick Filter Action Banner -->
+    <div class="alert text-white rounded-4 shadow-sm p-4 d-flex justify-content-between align-items-center mb-4" style="background: linear-gradient(135deg, #116963, #10b981);">
+        <div>
+            <h5 class="fw-bold mb-1"><i class="fas fa-bolt text-warning me-2"></i>Looking for the fastest refuel?</h5>
+
+        </div>
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-light rounded-pill px-3 fw-bold shadow-sm" style="color: #116963;" onclick="filterGreenQueue()">
+                <i class="fas fa-filter me-1"></i> Show Clear Only
+            </button>
+            <button type="button" class="btn btn-outline-light rounded-pill px-3 fw-bold" onclick="resetFilter()">
+                Show All
+            </button>
+        </div>
+    </div>
+
+    <!-- Station List Header -->
+    <h4 class="fw-bold mb-3" style="color: #116963;" id="stations">Nearby Available Stations</h4>
+
+    <div class="row g-4">
+        {% for item in stations_with_details %}
+        <div class="col-md-6 col-lg-4 station-item-col">
+            <div class="card h-100 shadow-sm rounded-4 overflow-hidden position-relative station-hover-card">
+                <div class="card-body p-4 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title fw-bold text-dark mb-0">{{ item.station.name }}</h5>
+                            <span class="badge rounded-pill px-3 py-2 fw-semibold" style="background-color: #d1fae5; color: #065f46;">Open</span>
+                        </div>
+                        <p class="text-muted small mb-1">
+                            <i class="fas fa-map-marker-alt text-danger me-1"></i>{{ item.station.location }}
+                        </p>
+                        <p class="text-muted small mb-3">
+                            <i class="fas fa-city text-primary me-1"></i>{{ item.station.city }}
+                        </p>
+
+                        <!-- Queue Status Badge -->
+                        <div class="p-3 rounded-3 mb-3" style="background-color: #f8fafc; border: 1px solid #f1f5f9;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="small fw-semibold text-secondary">Queue Status:</span>
+                                {% if item.queue_status %}
+                                    {% if item.queue_status.status == 'green' or item.queue_status.status == 'no_queue' %}
+                                        <span class="badge rounded-pill px-3 py-2 text-white status-green-badge" style="background-color: #10b981;">
+                                            <i class="fas fa-check-circle me-1"></i> No Queue
+                                        </span>
+                                    {% elif item.queue_status.status == 'yellow' or item.queue_status.status == 'short' %}
+                                        <span class="badge rounded-pill px-3 py-2 text-white" style="background-color: #f59e0b;">
+                                            <i class="fas fa-clock me-1"></i> Short Queue
+                                        </span>
+                                    {% else %}
+                                        <span class="badge rounded-pill px-3 py-2 text-white" style="background-color: #ef4444;">
+                                            <i class="fas fa-exclamation-triangle me-1"></i> Long Queue
+                                        </span>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="badge rounded-pill px-3 py-2 text-white status-green-badge" style="background-color: #10b981;">
+                                        <i class="fas fa-check-circle me-1"></i> No Queue Info
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Fuel Prices Display -->
+                        {% if item.fuel_prices %}
+                            <div class="mb-3">
+                                <small class="text-muted fw-bold d-block mb-1">Fuel Prices:</small>
+                                <div class="d-flex flex-wrap gap-1">
+                                    {% for price in item.fuel_prices %}
+                                        <span class="badge bg-light text-dark border px-2 py-1 small">
+                                            {{ price.get_fuel_type_display }}: <strong>{{ price.price }} SDG</strong>
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="pt-2">
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-custom-primary btn-sm w-100 rounded-pill fw-semibold shadow-sm" data-bs-toggle="modal" data-bs-target="#ratingModal{{ item.station.id }}">
+                                <i class="fas fa-star me-1"></i> Rate
+                            </button>
+                            <button class="btn btn-custom-secondary btn-sm w-100 rounded-pill fw-semibold" onclick="alert('Queue status report submitted! 👍')">
+                                <i class="fas fa-flag me-1"></i> Report Queue
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rating Modal -->
+        <div class="modal fade" id="ratingModal{{ item.station.id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-4 border-0 shadow">
+                    <div class="modal-header text-white" style="background-color: #116963;">
+                        <h5 class="modal-title fw-bold"><i class="fas fa-star me-2"></i>Rate {{ item.station.name }}</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4 text-center">
+                        <p class="text-muted mb-2">How was your experience at this station?</p>
+                        <div class="star-rating mb-3">
+                            <i class="fas fa-star" onclick="setRating(this, 1)"></i>
+                            <i class="fas fa-star" onclick="setRating(this, 2)"></i>
+                            <i class="fas fa-star" onclick="setRating(this, 3)"></i>
+                            <i class="fas fa-star" onclick="setRating(this, 4)"></i>
+                            <i class="fas fa-star" onclick="setRating(this, 5)"></i>
+                        </div>
+                        <div class="mb-3 text-start">
+                            <label for="feedbackNote{{ item.station.id }}" class="form-label fw-semibold small text-secondary">Notes / Comments (Optional)</label>
+                            <textarea id="feedbackNote{{ item.station.id }}" class="form-control rounded-3" rows="3" placeholder="Write your feedback here..."></textarea>
+                        </div>
+                        <button type="button" class="btn btn-custom-primary w-100 rounded-pill fw-semibold py-2" data-bs-dismiss="modal" onclick="alert('Thank you for your rating and feedback! ⭐')">Submit Rating</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert text-center rounded-4 p-4" style="background-color: #e6f2f1; color: #116963;">
+                No stations available in your area.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
+
+<script>
+    function setRating(element, rating) {
+        const stars = element.parentElement.querySelectorAll('i');
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.classList.add('selected');
+            } else {
+                star.classList.remove('selected');
+            }
+        });
+    }
+
+    function filterGreenQueue() {
+        const stationSection = document.getElementById('stations');
+        if (stationSection) {
+            stationSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        const cols = document.querySelectorAll('.station-item-col');
+        cols.forEach(col => {
+            const hasGreenBadge = col.querySelector('.status-green-badge');
+            if (hasGreenBadge) {
+                col.style.display = 'block';
+            } else {
+                col.style.display = 'none';
+            }
+        });
+    }
+
+    function resetFilter() {
+        const cols = document.querySelectorAll('.station-item-col');
+        cols.forEach(col => {
+            col.style.display = 'block';
+        });
+    }
+</script>
 {% endblock %}
