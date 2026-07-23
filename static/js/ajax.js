@@ -142,7 +142,19 @@ function scrollToStations() {
 }
 
 // ============================================
-// 3. INITIALIZE (on page load)
+// 3. AUTO-REFRESH STATION LIST (polling)
+// ============================================
+
+function startAutoRefresh() {
+    // Re-fetch the station list every 10 seconds so queue/price
+    // updates from other users appear without a manual reload.
+    setInterval(function () {
+        performSearch();
+    }, 10000);
+}
+
+// ============================================
+// 4. INITIALIZE (on page load)
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -173,6 +185,13 @@ document.addEventListener('DOMContentLoaded', function() {
         searchBtn.addEventListener('click', performSearch);
     } else {
         console.warn('⚠️ Search button not found');
+    }
+    
+    // Start auto-refresh only on pages that have the station container
+    const stationContainer = document.getElementById('stationContainer');
+    if (stationContainer) {
+        startAutoRefresh();
+        console.log('✅ Auto-refresh started (every 10s)');
     }
     
     console.log('✅ All systems ready!');

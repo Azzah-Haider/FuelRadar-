@@ -134,8 +134,8 @@ def add_fuel_price(request):
         station = stations.first()
 
     if not station.is_approved:
-        messages.warning(request, 'Your station must be approved by an admin before you can set this.')
-        return redirect('stations:manage_station')
+        messages.warning(request, 'Your station must be approved by an admin before you can set fuel prices.')
+        return redirect('manager_dashboard')
    
     if request.method == 'POST':
         form = FuelPriceForm(request.POST)
@@ -170,7 +170,11 @@ def update_fuel_price(request, price_id):
         return redirect('stations:create_station')
     
     fuel_price = get_object_or_404(FuelPrice, id=price_id, station=station)
-    
+
+    if not station.is_approved:
+        messages.warning(request, 'Your station must be approved by an admin before you can update fuel prices.')
+        return redirect('manager_dashboard')
+
     if request.method == 'POST':
         form = FuelPriceForm(request.POST, instance=fuel_price)
         if form.is_valid():
@@ -240,7 +244,11 @@ def update_queue_status(request):
         station = stations.first()
     
     queue_status, created = QueueStatus.objects.get_or_create(station=station)
-    
+
+    if not station.is_approved:
+        messages.warning(request, 'Your station must be approved by an admin before you can update queue status.')
+        return redirect('manager_dashboard')
+
     if request.method == 'POST':
         form = QueueStatusForm(request.POST, instance=queue_status)
         if form.is_valid():
