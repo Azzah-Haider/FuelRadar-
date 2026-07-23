@@ -4,7 +4,7 @@ from .models import Station, FuelPrice, QueueStatus
 class StationForm(forms.ModelForm):
     class Meta:
         model = Station
-        fields = ['name', 'location', 'city', 'operating_hours', 'services', 'contact_phone']
+        fields = ['name', 'location', 'city', 'operating_hours', 'services', 'contact_phone', 'map_link']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Station Name'}),
             'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Full Address'}),

@@ -19,6 +19,7 @@ class Station(models.Model):
     operating_hours = models.CharField(max_length=200, blank=True, null=True)
     services = models.TextField(blank=True, null=True, help_text="e.g., Car Wash, Restaurant, ATM")
     contact_phone = models.CharField(max_length=20, blank=True, null=True)
+    map_link = models.URLField(max_length=500, blank=True, null=True, help_text="Paste the Google Maps link for this station")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -33,8 +34,8 @@ class Station(models.Model):
 
 class FuelPrice(models.Model):
     FUEL_TYPES = (
-        ('banzen', 'Banzen'),
-        ('gaz', 'Gaz'),
+        ('petrol', 'Petrol'),
+        ('gas', 'Gas'),
     )
 
     station = models.ForeignKey(

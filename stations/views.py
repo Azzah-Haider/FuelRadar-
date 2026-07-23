@@ -132,7 +132,11 @@ def add_fuel_price(request):
         station = get_object_or_404(Station, id=station_id, manager=request.user)
     else:
         station = stations.first()
-    
+
+    if not station.is_approved:
+        messages.warning(request, 'Your station must be approved by an admin before you can set this.')
+        return redirect('stations:manage_station')
+   
     if request.method == 'POST':
         form = FuelPriceForm(request.POST)
         if form.is_valid():

@@ -16,7 +16,7 @@
                         </a>
                     {% else %}
                         <a href="#stations" class="btn btn-light btn-lg" onclick="scrollToStations()">
-                            <i class="bi bi-person-plus"></i> Get Started
+                            <i class="bi bi-lightning-charge"></i> Get Started
                         </a>
 
                     {% endif %}
@@ -186,6 +186,26 @@
                                             <i class="bi bi-clock"></i> {{ item.station.operating_hours }}
                                         </p>
                                     {% endif %}
+                                    {% if item.station.map_link %}
+                                        <button type="button" class="btn btn-teal btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#mapModal{{ item.station.id }}">
+                                           <i class="bi bi-geo-alt"></i> View Location
+                                        </button>
+
+                                        <div class="modal fade" id="mapModal{{ item.station.id }}" tabindex="-1">
+                                           <div class="modal-dialog modal-lg modal-dialog-centered">
+                                             <div class="modal-content">
+                                               <div class="modal-header card-teal-header">
+                                                   <h5 class="modal-title">{{ item.station.name }}</h5>
+                                                   <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                               </div>
+                                               <div class="modal-body p-0">
+                                                   <iframe src="{{ item.station.map_link }}" width="100%" height="450" style="border:0;" loading="lazy"></iframe>
+                                               </div>
+                                             </div>
+                                           </div>
+                                        </div>
+                                    {% endif %}
+                                    
                                 </div>
                             </div>
                         {% endfor %}
@@ -221,5 +241,63 @@
 
 <!-- Notification Container for AJAX -->
 <div id="notificationContainer" class="mt-3"></div>
+
+<!-- Roles Section -->
+<div class="row mt-5 mb-4">
+    <div class="col-12 text-center mb-4">
+        <span class="text-uppercase fw-bold" style="color: #009688; letter-spacing: 1px; font-size: 0.9rem;">
+            Built For Everyone
+        </span>
+        <h2 class="fw-bold mt-2" style="color: #134E4A;">Three Roles. One Platform.</h2>
+    </div>
+</div>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm p-2" style="border: 1px solid #009688;">
+            <div class="card-body">
+                <i class="bi bi-car-front" style="font-size: 2rem; color: #009688;"></i>
+                <h5 class="card-title mt-3 fw-bold">Drivers</h5>
+                <p class="text-muted small mb-3">Save time and fuel on every trip.</p>
+                <ul class="list-unstyled small">
+                    <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i>Browse stations without an account</li>
+                    <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i>Compare live fuel prices nearby</li>
+                    <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i>Check real-time queue status</li>
+                    <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i>Rate stations &amp; leave comments (sign in required)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm p-2" style="border: 1px solid #009688;">
+            <div class="card-body">
+                <i class="bi bi-shop" style="font-size: 2rem; color: #009688;"></i>
+                <h5 class="card-title mt-3 fw-bold">Station Managers</h5>
+                <p class="text-muted small mb-3">Stay connected with your customers.</p>
+                <ul class="list-unstyled small">
+                    <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i>Register &amp; manage your station profile</li>
+                    <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i>Update fuel prices instantly</li>
+                    <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i>Report queue status in real time</li>
+                    <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i>Present available services</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm p-2" style="border: 1px solid #009688;">
+            <div class="card-body">
+                <i class="bi bi-shield-check" style="font-size: 2rem; color: #009688;"></i>
+                <h5 class="card-title mt-3 fw-bold">Administrators</h5>
+                <p class="text-muted small mb-3">Run the whole platform.</p>
+                <ul class="list-unstyled small">
+                    <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i>Approve new station registrations</li>
+                    <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i>Monitor all stations &amp; users</li>
+                    <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i>Moderate ratings &amp; feedback</li>
+                    <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i>Remove inappropriate listings</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
