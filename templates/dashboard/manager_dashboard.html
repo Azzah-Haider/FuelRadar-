@@ -31,16 +31,35 @@
         {% for station in stations %}
             <div class="col-md-6">
                 <div class="card border-0 shadow-sm">
-                    <div class="card-teal-header">
-                        <i class="bi bi-fuel-pump"></i> {{ station.name }}
-                        <span class="badge bg-success text-white float-end">
-                            {% if station.is_approved %}
-                                <i class="bi bi-check-circle"></i> Approved
-                            {% else %}
-                                <i class="bi bi-clock"></i> Pending Approval
-                            {% endif %}
-                        </span>
-                    </div>
+                          <div class="card-teal-header">
+    <i class="bi bi-fuel-pump"></i> {{ station.name }}
+    <!-- Rating Display for Managers -->
+    <span class="ms-2">
+        {% with ratings=station.ratings.all %}
+            {% if ratings %}
+                {% with avg_rating=ratings|length|add:0 %}
+                    <span class="text-warning">
+                        {% with full_stars=station.full_stars|default:0 %}
+    {% for i in "12345"|slice:full_stars %}
+        ⭐
+    {% endfor %}
+{% endwith %}
+                    </span>
+                    <span class="text-muted small">({{ ratings|length }})</span>
+                {% endwith %}
+            {% else %}
+                <span class="text-muted small"><i class="bi bi-star"></i> No ratings</span>
+            {% endif %}
+        {% endwith %}
+    </span>
+    <span class="badge bg-success text-white float-end">
+        {% if station.is_approved %}
+            <i class="bi bi-check-circle"></i> Approved
+        {% else %}
+            <i class="bi bi-clock"></i> Pending Approval
+        {% endif %}
+    </span>
+</div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
@@ -97,21 +116,21 @@
                             {% endif %}
                         {% endwith %}
                         
-                        <!-- Station Actions -->
-                        <div class="mt-3 d-flex gap-2 flex-wrap">
-                            <a href="{% url 'stations:update_station' %}" class="btn btn-edit btn-sm">
-                                <i class="bi bi-pencil"></i> Edit
-                            </a>
-                            <a href="{% url 'stations:add_fuel_price' %}" class="btn btn-save btn-sm">
-                                <i class="bi bi-plus-circle"></i> Add Price
-                            </a>
-                            <a href="{% url 'stations:update_queue_status' %}" class="btn btn-warning-custom btn-sm">
-                                <i class="bi bi-clock"></i> Update Queue
-                            </a>
-                            <a href="{% url 'stations:delete_station' %}" class="btn btn-delete btn-sm">
-                                <i class="bi bi-trash"></i> Delete
-                            </a>
-                        </div>
+                       <!-- Station Actions -->
+<div class="mt-3 d-flex gap-2 flex-wrap">
+    <a href="{% url 'stations:update_station' %}?station_id={{ station.id }}" class="btn btn-edit btn-sm">
+        <i class="bi bi-pencil"></i> Edit
+    </a>
+    <a href="{% url 'stations:add_fuel_price' %}?station_id={{ station.id }}" class="btn btn-save btn-sm">
+        <i class="bi bi-plus-circle"></i> Add Price
+    </a>
+    <a href="{% url 'stations:update_queue_status' %}?station_id={{ station.id }}" class="btn btn-warning-custom btn-sm">
+        <i class="bi bi-clock"></i> Update Queue
+    </a>
+    <a href="{% url 'stations:delete_station' %}?station_id={{ station.id }}" class="btn btn-delete btn-sm">
+        <i class="bi bi-trash"></i> Delete
+    </a>
+</div>
                     </div>
                 </div>
             </div>

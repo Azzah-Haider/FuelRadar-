@@ -4,9 +4,11 @@ from django.contrib import messages
 from django.urls import reverse
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+from django.db import models
 import json
-from .models import Station, FuelPrice, QueueStatus
-from .forms import StationForm, FuelPriceForm, QueueStatusForm
+from .models import Station, FuelPrice, QueueStatus , StationRating
+from .forms import StationForm, FuelPriceForm, QueueStatusForm, StationRatingForm
+
 
 
 # ========== STATION CRUD ==========
@@ -48,12 +50,20 @@ def update_station(request):
         messages.error(request, 'You need to create a station first.')
         return redirect('stations:create_station')
     
-    if stations.count() > 1:
-        if request.method == 'POST' and 'station_id' in request.POST:
-            station_id = request.POST.get('station_id')
-            station = get_object_or_404(Station, id=station_id, manager=request.user)
-        else:
-            return render(request, 'stations/select_station.html', {'stations': stations, 'action': 'update'})
+    # Get station_id from GET parameter
+    station_id = request.GET.get('station_id')
+    
+    # If multiple stations and no station selected, show selection page
+    if stations.count() > 1 and not station_id:
+        return render(request, 'stations/select_station.html', {
+            'stations': stations, 
+            'action': 'update',
+            'action_url': 'stations:update_station'
+        })
+    
+    # Get the selected station
+    if station_id:
+        station = get_object_or_404(Station, id=station_id, manager=request.user)
     else:
         station = stations.first()
     
@@ -83,12 +93,20 @@ def delete_station(request):
         messages.error(request, 'You need to create a station first.')
         return redirect('stations:create_station')
     
-    if stations.count() > 1:
-        if request.method == 'POST' and 'station_id' in request.POST:
-            station_id = request.POST.get('station_id')
-            station = get_object_or_404(Station, id=station_id, manager=request.user)
-        else:
-            return render(request, 'stations/select_station.html', {'stations': stations, 'action': 'delete'})
+    # Get station_id from GET parameter
+    station_id = request.GET.get('station_id')
+    
+    # If multiple stations and no station selected, show selection page
+    if stations.count() > 1 and not station_id:
+        return render(request, 'stations/select_station.html', {
+            'stations': stations, 
+            'action': 'delete',
+            'action_url': 'stations:delete_station'
+        })
+    
+    # Get the selected station
+    if station_id:
+        station = get_object_or_404(Station, id=station_id, manager=request.user)
     else:
         station = stations.first()
     
@@ -132,11 +150,7 @@ def add_fuel_price(request):
         station = get_object_or_404(Station, id=station_id, manager=request.user)
     else:
         station = stations.first()
-
-    if not station.is_approved:
-        messages.warning(request, 'Your station must be approved by an admin before you can set fuel prices.')
-        return redirect('manager_dashboard')
-   
+    
     if request.method == 'POST':
         form = FuelPriceForm(request.POST)
         if form.is_valid():
@@ -234,7 +248,8 @@ def update_queue_status(request):
     if stations.count() > 1 and not station_id:
         return render(request, 'stations/select_station.html', {
             'stations': stations, 
-            'action': 'update_queue'
+            'action': 'update_queue',
+            'action_url': 'stations:update_queue_status'
         })
     
     # Get the selected station
@@ -244,11 +259,7 @@ def update_queue_status(request):
         station = stations.first()
     
     queue_status, created = QueueStatus.objects.get_or_create(station=station)
-
-    if not station.is_approved:
-        messages.warning(request, 'Your station must be approved by an admin before you can update queue status.')
-        return redirect('manager_dashboard')
-
+    
     if request.method == 'POST':
         form = QueueStatusForm(request.POST, instance=queue_status)
         if form.is_valid():
@@ -301,6 +312,12 @@ def search_stations(request):
         fuel_prices = FuelPrice.objects.filter(station=station)
         fuel_data = [{'fuel_type': p.get_fuel_type_display(), 'price': str(p.price)} for p in fuel_prices]
         
+        # Get rating data
+        ratings = StationRating.objects.filter(station=station)
+        avg_rating = ratings.aggregate(models.Avg('rating'))['rating__avg'] or 0
+        total_ratings = ratings.count()
+        full_stars = int(round(avg_rating)) if avg_rating > 0 else 0
+        
         station_data.append({
             'id': station.id,
             'name': station.name,
@@ -309,6 +326,10 @@ def search_stations(request):
             'operating_hours': station.operating_hours,
             'queue_status': queue_data,
             'fuel_prices': fuel_data,
+            'avg_rating': round(avg_rating, 1),
+            'total_ratings': total_ratings,
+            'full_stars': full_stars,
+            'map_link': station.map_link,  # ⭐ ADD THIS
         })
     
     return JsonResponse({'stations': station_data, 'count': len(station_data)})
@@ -322,18 +343,24 @@ def update_queue_ajax(request):
         return JsonResponse({'error': 'Permission denied'}, status=403)
     
     try:
-        station = Station.objects.get(manager=request.user)
-    except Station.DoesNotExist:
-        return JsonResponse({'error': 'No station found'}, status=404)
-    
-    try:
         data = json.loads(request.body)
         status = data.get('status')
         queue_length = data.get('queue_length')
+        station_id = data.get('station_id')
         
         if not status:
             return JsonResponse({'error': 'Status is required'}, status=400)
         
+        # Get the station
+        if station_id:
+            station = get_object_or_404(Station, id=station_id, manager=request.user)
+        else:
+            # If no station_id, try to get the manager's first station
+            station = Station.objects.filter(manager=request.user).first()
+            if not station:
+                return JsonResponse({'error': 'No station found'}, status=404)
+        
+        # Get or create queue status
         queue_status, created = QueueStatus.objects.get_or_create(station=station)
         queue_status.status = status
         if queue_length is not None:
@@ -343,7 +370,7 @@ def update_queue_ajax(request):
         
         return JsonResponse({
             'success': True,
-            'message': 'Queue status updated successfully!',
+            'message': f'Queue status updated for {station.name}!',
             'status': queue_status.status,
             'status_display': queue_status.get_status_display(),
             'queue_length': queue_status.queue_length,
@@ -353,7 +380,6 @@ def update_queue_ajax(request):
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
-
 
 @login_required
 @require_http_methods(["POST"])
@@ -393,3 +419,79 @@ def update_price_ajax(request):
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
+
+
+# ========== RATING SYSTEM ==========
+
+@login_required
+def rate_station_ajax(request):
+    """AJAX: Rate a station"""
+    if request.user.role != 'driver':
+        return JsonResponse({'error': 'Only drivers can rate stations'}, status=403)
+    
+    try:
+        data = json.loads(request.body)
+        station_id = data.get('station_id')
+        rating = data.get('rating')
+        comment = data.get('comment', '')
+        
+        if not station_id or not rating:
+            return JsonResponse({'error': 'Station ID and rating are required'}, status=400)
+        
+        station = get_object_or_404(Station, id=station_id, is_approved=True)
+        
+        # Check if user already rated this station
+        existing_rating = StationRating.objects.filter(station=station, user=request.user).first()
+        
+        if existing_rating:
+            existing_rating.rating = rating
+            existing_rating.comment = comment
+            existing_rating.save()
+            message = 'Your rating has been updated!'
+        else:
+            StationRating.objects.create(
+                station=station,
+                user=request.user,
+                rating=rating,
+                comment=comment
+            )
+            message = 'Thank you for your rating!'
+        
+        # Calculate new average
+        avg_rating = StationRating.objects.filter(station=station).aggregate(models.Avg('rating'))['rating__avg'] or 0
+        
+        return JsonResponse({
+            'success': True,
+            'message': message,
+            'avg_rating': round(avg_rating, 1),
+            'total_ratings': StationRating.objects.filter(station=station).count()
+        })
+        
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+
+@login_required
+def get_station_rating(request, station_id):
+    """AJAX: Get station's average rating"""
+    station = get_object_or_404(Station, id=station_id, is_approved=True)
+    
+    ratings = StationRating.objects.filter(station=station)
+    avg_rating = ratings.aggregate(models.Avg('rating'))['rating__avg'] or 0
+    
+    # Get user's rating if exists
+    user_rating = None
+    if request.user.is_authenticated:
+        try:
+            user_rating_obj = StationRating.objects.get(station=station, user=request.user)
+            user_rating = user_rating_obj.rating
+        except StationRating.DoesNotExist:
+            pass
+    
+    return JsonResponse({
+        'avg_rating': round(avg_rating, 1),
+        'total_ratings': ratings.count(),
+        'user_rating': user_rating
+    })

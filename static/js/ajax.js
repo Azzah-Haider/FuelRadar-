@@ -20,20 +20,32 @@ function performSearch() {
     const city = document.getElementById('cityFilter')?.value || '';
     
     const url = `/stations/api/search/?q=${encodeURIComponent(query)}&city=${encodeURIComponent(city)}`;
+    console.log('🔍 Searching:', url);
     
     fetch(url)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log('✅ Search results:', data);
             updateStationCardsInstant(data);
         })
         .catch(error => {
-            console.error('Search error:', error);
+            console.error('❌ Search error:', error);
         });
 }
 
 function updateStationCardsInstant(data) {
     const container = document.getElementById('stationContainer');
-    if (!container) return;
+    if (!container) {
+        console.error('❌ stationContainer not found!');
+        return;
+    }
+    
+    console.log('🔄 Updating station cards with', data.count, 'stations');
     
     if (data.stations.length === 0) {
         container.innerHTML = `
@@ -50,7 +62,8 @@ function updateStationCardsInstant(data) {
     
     let html = '<div class="row g-4">';
     
-    data.stations.forEach(station => {
+    data.stations.forEach(function(station) {
+        // Queue Status
         let queueHTML = '';
         if (station.queue_status) {
             const icons = {
@@ -75,26 +88,59 @@ function updateStationCardsInstant(data) {
             `;
         }
         
+        // Fuel Prices
         let fuelHTML = '';
         if (station.fuel_prices && station.fuel_prices.length > 0) {
             fuelHTML = `
                 <div class="mt-2">
                     <small class="text-muted fw-bold">Fuel Prices:</small>
                     <div class="d-flex flex-wrap gap-1 mt-1">
-                        ${station.fuel_prices.map(p => 
-                            `<span class="fuel-badge fuel-available">${p.fuel_type}: ${p.price} SDG</span>`
-                        ).join('')}
+                        ${station.fuel_prices.map(function(p) {
+                            return `<span class="fuel-badge fuel-available">${p.fuel_type}: ${p.price} SDG</span>`;
+                        }).join('')}
                     </div>
                 </div>
+            `;
+        }
+        
+        // Rating
+        let ratingHTML = '';
+        if (station.avg_rating && station.avg_rating > 0) {
+            const fullStars = Math.round(station.avg_rating);
+            const starsHtml = '⭐'.repeat(fullStars);
+            ratingHTML = `
+                <div class="d-flex align-items-center gap-2 mt-1">
+                    <span class="text-warning">${starsHtml}</span>
+                    <span class="text-muted small">(${station.total_ratings || 0})</span>
+                </div>
+            `;
+        } else {
+            ratingHTML = `
+                <div class="d-flex align-items-center gap-2 mt-1">
+                    <span class="text-muted small"><i class="bi bi-star"></i> No ratings yet</span>
+                </div>
+            `;
+        }
+        
+        // Map Link
+        let mapHTML = '';
+        if (station.map_link && station.map_link !== 'null' && station.map_link.trim() !== '') {
+            mapHTML = `
+                <button type="button" class="btn btn-teal btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#mapModal${station.id}">
+                    <i class="bi bi-geo-alt"></i> View Location
+                </button>
             `;
         }
         
         html += `
             <div class="col-md-4">
                 <div class="station-card h-100 p-3">
-                    <h5 class="station-name">
-                        <i class="bi bi-fuel-pump text-teal"></i> ${station.name}
-                    </h5>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h5 class="station-name mb-0">
+                            <i class="bi bi-fuel-pump text-teal"></i> ${station.name}
+                        </h5>
+                    </div>
+                    ${ratingHTML}
                     <p class="station-location">
                         <i class="bi bi-geo-alt text-danger"></i> ${station.location}
                     </p>
@@ -108,6 +154,7 @@ function updateStationCardsInstant(data) {
                             <i class="bi bi-clock"></i> ${station.operating_hours}
                         </p>
                     ` : ''}
+                    ${mapHTML}
                 </div>
             </div>
         `;
@@ -134,7 +181,7 @@ function scrollToStations() {
         });
         const searchInput = document.getElementById('searchInput');
         if (searchInput) {
-            setTimeout(() => {
+            setTimeout(function() {
                 searchInput.focus();
             }, 500);
         }
@@ -142,15 +189,125 @@ function scrollToStations() {
 }
 
 // ============================================
-// 3. AUTO-REFRESH STATION LIST (polling)
+// 3. AUTO-REFRESH STATION LIST
 // ============================================
 
 function startAutoRefresh() {
-    // Re-fetch the station list every 10 seconds so queue/price
-    // updates from other users appear without a manual reload.
-    setInterval(function () {
+    setInterval(function() {
+        console.log('🔄 Auto-refreshing station list...');
         performSearch();
-    }, 10000);
+    }, 3000);
+}
+
+// ============================================
+// 5. QUEUE STATUS UPDATE (AJAX)
+// ============================================
+
+function updateQueueStatus(status, queueLength, stationId) {
+    console.log('📤 Updating queue:', {status, queueLength, stationId});
+    
+    const data = {
+        status: status,
+        queue_length: parseInt(queueLength) || 0,
+        station_id: stationId
+    };
+    
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || getCSRFToken();
+    
+    fetch('/stations/api/update-queue/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify(data)
+    })
+    .then(function(response) {
+        console.log('📥 Response status:', response.status);
+        return response.json();
+    })
+    .then(function(data) {
+        console.log('✅ Queue update response:', data);
+        if (data.success) {
+            showNotification('success', data.message);
+            updateQueueDisplay(data, stationId);
+        } else {
+            showNotification('error', data.error || 'Something went wrong');
+        }
+    })
+    .catch(function(error) {
+        console.error('❌ Queue update error:', error);
+        showNotification('error', 'Network error. Please try again.');
+    });
+}
+
+function updateQueueDisplay(data, stationId) {
+    console.log('🔄 Updating queue display for station:', stationId);
+    
+    const queueBadge = document.getElementById('queueStatusBadge-' + stationId);
+    const queueCars = document.getElementById('queueCars-' + stationId);
+    const queueTime = document.getElementById('queueTime-' + stationId);
+    
+    if (queueBadge) {
+        const icons = {
+            'green': 'check-circle',
+            'yellow': 'clock',
+            'red': 'exclamation-circle'
+        };
+        queueBadge.className = 'status-badge status-' + data.status;
+        queueBadge.innerHTML = `
+            <i class="bi bi-${icons[data.status] || 'circle'}"></i>
+            ${data.status_display}
+        `;
+    }
+    
+    if (queueCars) {
+        queueCars.textContent = data.queue_length + ' cars waiting';
+    }
+    
+    if (queueTime) {
+        queueTime.textContent = 'Updated: ' + data.updated_at;
+    }
+}
+
+// ============================================
+// 6. NOTIFICATIONS
+// ============================================
+
+function showNotification(type, message) {
+    const container = document.getElementById('notificationContainer');
+    if (!container) {
+        console.warn('⚠️ notificationContainer not found');
+        return;
+    }
+    
+    const icons = {
+        'success': 'check-circle',
+        'error': 'x-circle',
+        'warning': 'exclamation-circle'
+    };
+    
+    const alertClass = type === 'success' ? 'alert-success' : 
+                      type === 'error' ? 'alert-danger' : 'alert-warning';
+    
+    const html = `
+        <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+            <i class="bi bi-${icons[type] || 'info-circle'}"></i>
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    `;
+    
+    container.insertAdjacentHTML('beforeend', html);
+    
+    setTimeout(function() {
+        const alerts = container.querySelectorAll('.alert');
+        if (alerts.length > 0) {
+            const lastAlert = alerts[alerts.length - 1];
+            const closeBtn = lastAlert.querySelector('.btn-close');
+            if (closeBtn) closeBtn.click();
+        }
+    }, 4000);
 }
 
 // ============================================
@@ -187,11 +344,11 @@ document.addEventListener('DOMContentLoaded', function() {
         console.warn('⚠️ Search button not found');
     }
     
-    // Start auto-refresh only on pages that have the station container
+    // Start auto-refresh
     const stationContainer = document.getElementById('stationContainer');
     if (stationContainer) {
         startAutoRefresh();
-        console.log('✅ Auto-refresh started (every 10s)');
+        console.log('✅ Auto-refresh started (every 3s)');
     }
     
     console.log('✅ All systems ready!');

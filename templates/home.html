@@ -140,10 +140,25 @@
                         {% for item in stations_with_details %}
                             <div class="col-md-4">
                                 <div class="station-card h-100 p-3">
-                                    <h5 class="station-name">
-                                        <i class="bi bi-fuel-pump text-teal"></i> {{ item.station.name }}
-                                    </h5>
-                                    <p class="station-location">
+                                  <div class="d-flex justify-content-between align-items-start">
+    <h5 class="station-name mb-0">
+        <i class="bi bi-fuel-pump text-teal"></i> {{ item.station.name }}
+    </h5>
+</div>
+<!-- ⭐ RATING DISPLAY - Below station name -->
+<div class="d-flex align-items-center gap-2 mt-1">
+    {% if item.total_ratings > 0 %}
+        <span class="text-warning">
+            {% for i in "12345"|slice:item.full_stars %}
+                ⭐
+            {% endfor %}
+        </span>
+        <span class="text-muted small">({{ item.total_ratings }})</span>
+    {% else %}
+        <span class="text-muted small"><i class="bi bi-star"></i> No ratings yet</span>
+    {% endif %}
+</div>
+                             <p class="station-location">
                                         <i class="bi bi-geo-alt text-danger"></i> {{ item.station.location }}
                                     </p>
                                     <p class="station-location">
@@ -181,30 +196,32 @@
                                         </div>
                                     {% endif %}
                                     
-                                    {% if item.station.operating_hours %}
-                                        <p class="mt-2 mb-0 text-muted small">
-                                            <i class="bi bi-clock"></i> {{ item.station.operating_hours }}
-                                        </p>
-                                    {% endif %}
-                                    {% if item.station.map_link %}
-                                        <button type="button" class="btn btn-teal btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#mapModal{{ item.station.id }}">
-                                           <i class="bi bi-geo-alt"></i> View Location
-                                        </button>
+{% if item.station.map_link %}
+    <button type="button" class="btn btn-teal btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#mapModal{{ item.station.id }}">
+        <i class="bi bi-geo-alt"></i> View Location
+    </button>
 
-                                        <div class="modal fade" id="mapModal{{ item.station.id }}" tabindex="-1">
-                                           <div class="modal-dialog modal-lg modal-dialog-centered">
-                                             <div class="modal-content">
-                                               <div class="modal-header card-teal-header">
-                                                   <h5 class="modal-title">{{ item.station.name }}</h5>
-                                                   <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                                               </div>
-                                               <div class="modal-body p-0">
-                                                   <iframe src="{{ item.station.map_link }}" width="100%" height="450" style="border:0;" loading="lazy"></iframe>
-                                               </div>
-                                             </div>
-                                           </div>
-                                        </div>
-                                    {% endif %}
+    <div class="modal fade" id="mapModal{{ item.station.id }}" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header card-teal-header">
+                    <h5 class="modal-title">{{ item.station.name }}</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <iframe 
+                        src="{{ item.station.map_link }}" 
+                        width="100%" 
+                        height="450" 
+                        style="border:0;" 
+                        loading="lazy"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
                                     
                                 </div>
                             </div>

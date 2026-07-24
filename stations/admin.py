@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Station, FuelPrice, QueueStatus
+from .models import StationRating
 
 @admin.register(Station)
 class StationAdmin(admin.ModelAdmin):
@@ -25,3 +26,10 @@ class QueueStatusAdmin(admin.ModelAdmin):
     list_filter = ['status', 'updated_at']
     search_fields = ['station__name']
     ordering = ['-updated_at']
+
+
+@admin.register(StationRating)
+class StationRatingAdmin(admin.ModelAdmin):
+    list_display = ['station', 'user', 'rating', 'created_at']
+    list_filter = ['rating', 'created_at']
+    search_fields = ['station__name', 'user__username']

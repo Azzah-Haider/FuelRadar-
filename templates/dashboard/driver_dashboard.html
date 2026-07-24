@@ -97,9 +97,27 @@
                 <div class="card-body p-4 d-flex flex-column justify-content-between">
                     <div>
                         <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h5 class="card-title fw-bold text-dark mb-0">{{ item.station.name }}</h5>
-                            <span class="badge rounded-pill px-3 py-2 fw-semibold" style="background-color: #d1fae5; color: #065f46;">Open</span>
-                        </div>
+    <div>
+        <h5 class="card-title fw-bold text-dark mb-0">{{ item.station.name }}</h5>
+          <!-- ⭐ RATING DISPLAY - Visible to Everyone -->
+<div class="d-flex align-items-center gap-2 mt-1">
+    {% if item.avg_rating > 0 %}
+        <span class="text-warning">
+            {% for i in "12345"|slice:item.full_stars %}
+                ⭐
+            {% endfor %}
+        </span>
+        <span class="text-muted small">({{ item.total_ratings }})</span>
+        {% if item.user_rating %}
+            <span class="badge bg-info text-white small">Your rating: {{ item.user_rating }}⭐</span>
+        {% endif %}
+    {% else %}
+        <span class="text-muted small"><i class="fas fa-star text-muted"></i> No ratings yet</span>
+    {% endif %}
+</div>
+    </div>
+    <span class="badge rounded-pill px-3 py-2 fw-semibold" style="background-color: #d1fae5; color: #065f46;">Open</span>
+</div>
                         <p class="text-muted small mb-1">
                             <i class="fas fa-map-marker-alt text-danger me-1"></i>{{ item.station.location }}
                         </p>
@@ -153,9 +171,6 @@
                             <button class="btn btn-custom-primary btn-sm w-100 rounded-pill fw-semibold shadow-sm" data-bs-toggle="modal" data-bs-target="#ratingModal{{ item.station.id }}">
                                 <i class="fas fa-star me-1"></i> Rate
                             </button>
-                            <button class="btn btn-custom-primary btn-sm w-100 rounded-pill fw-semibold shadow-sm" onclick="alert('Queue status report submitted! 👍')">
-                                <i class="fas fa-flag me-1"></i> Report Queue
-                            </button>
                         </div>
                         {% if item.station.map_link %}
                             <button class="btn btn-custom-primary btn-sm w-100 rounded-pill fw-semibold mt-2" data-bs-toggle="modal" data-bs-target="#mapModal{{ item.station.id }}">
@@ -185,31 +200,35 @@
         {% endif %}
 
         <!-- Rating Modal -->
-        <div class="modal fade" id="ratingModal{{ item.station.id }}" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content rounded-4 border-0 shadow">
-                    <div class="modal-header text-white" style="background-color: #116963;">
-                        <h5 class="modal-title fw-bold"><i class="fas fa-star me-2"></i>Rate {{ item.station.name }}</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-4 text-center">
-                        <p class="text-muted mb-2">How was your experience at this station?</p>
-                        <div class="star-rating mb-3">
-                            <i class="fas fa-star" onclick="setRating(this, 1)"></i>
-                            <i class="fas fa-star" onclick="setRating(this, 2)"></i>
-                            <i class="fas fa-star" onclick="setRating(this, 3)"></i>
-                            <i class="fas fa-star" onclick="setRating(this, 4)"></i>
-                            <i class="fas fa-star" onclick="setRating(this, 5)"></i>
-                        </div>
-                        <div class="mb-3 text-start">
-                            <label for="feedbackNote{{ item.station.id }}" class="form-label fw-semibold small text-secondary">Notes / Comments (Optional)</label>
-                            <textarea id="feedbackNote{{ item.station.id }}" class="form-control rounded-3" rows="3" placeholder="Write your feedback here..."></textarea>
-                        </div>
-                        <button type="button" class="btn btn-custom-primary w-100 rounded-pill fw-semibold py-2" data-bs-dismiss="modal" onclick="alert('Thank you for your rating and feedback! ⭐')">Submit Rating</button>
-                    </div>
+<div class="modal fade" id="ratingModal{{ item.station.id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header text-white" style="background-color: #116963;">
+                <h5 class="modal-title fw-bold"><i class="fas fa-star me-2"></i>Rate {{ item.station.name }}</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 text-center">
+                <p class="text-muted mb-2">How was your experience at this station?</p>
+                <div class="star-rating mb-3" id="stars-{{ item.station.id }}">
+                    <i class="fas fa-star" onclick="setRating(this, 1, {{ item.station.id }})"></i>
+                    <i class="fas fa-star" onclick="setRating(this, 2, {{ item.station.id }})"></i>
+                    <i class="fas fa-star" onclick="setRating(this, 3, {{ item.station.id }})"></i>
+                    <i class="fas fa-star" onclick="setRating(this, 4, {{ item.station.id }})"></i>
+                    <i class="fas fa-star" onclick="setRating(this, 5, {{ item.station.id }})"></i>
                 </div>
+                <div class="mb-3 text-start">
+                    <label for="feedbackNote{{ item.station.id }}" class="form-label fw-semibold small text-secondary">Notes / Comments (Optional)</label>
+                    <textarea id="feedbackNote{{ item.station.id }}" class="form-control rounded-3" rows="3" placeholder="Write your feedback here..."></textarea>
+                </div>
+                <button type="button" class="btn btn-custom-primary w-100 rounded-pill fw-semibold py-2" id="submitRatingBtn{{ item.station.id }}" onclick="submitRating({{ item.station.id }})">
+                    <i class="fas fa-paper-plane me-1"></i> Submit Rating
+                </button>
+                <div id="ratingMessage{{ item.station.id }}" class="mt-2"></div>
             </div>
         </div>
+    </div>
+</div>
+
         {% empty %}
         <div class="col-12">
             <div class="alert text-center rounded-4 p-4" style="background-color: #e6f2f1; color: #116963;">
@@ -221,8 +240,11 @@
 </div>
 
 <script>
-    function setRating(element, rating) {
-        const stars = element.parentElement.querySelectorAll('i');
+    let selectedRating = {};
+    
+    function setRating(element, rating, stationId) {
+        selectedRating[stationId] = rating;
+        const stars = document.querySelectorAll(`#stars-${stationId} i`);
         stars.forEach((star, index) => {
             if (index < rating) {
                 star.classList.add('selected');
@@ -231,13 +253,96 @@
             }
         });
     }
-
+    
+    function submitRating(stationId) {
+        const rating = selectedRating[stationId];
+        const comment = document.getElementById(`feedbackNote${stationId}`).value;
+        const messageDiv = document.getElementById(`ratingMessage${stationId}`);
+        const btn = document.getElementById(`submitRatingBtn${stationId}`);
+        
+        // Clear previous message
+        messageDiv.innerHTML = '';
+        
+        if (!rating) {
+            messageDiv.innerHTML = `<div class="alert alert-warning py-2 mt-2">⚠️ Please select a rating first.</div>`;
+            return;
+        }
+        
+        // Disable button
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Submitting...';
+        
+        // Get CSRF token
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || getCSRFToken();
+        
+        fetch('/stations/api/rate/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({
+                station_id: stationId,
+                rating: rating,
+                comment: comment
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Response:', data);  // Debug log
+            
+            if (data.success) {
+                messageDiv.innerHTML = `<div class="alert alert-success py-2 mt-2">✅ ${data.message}</div>`;
+                btn.innerHTML = '<i class="fas fa-check me-1"></i> Rated!';
+                btn.disabled = true;
+                
+                // Close modal after 2 seconds
+                setTimeout(() => {
+                    const modal = document.getElementById(`ratingModal${stationId}`);
+                    // Close using Bootstrap
+                    const modalInstance = bootstrap.Modal.getInstance(modal);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    } else {
+                        // Fallback: hide manually
+                        modal.classList.remove('show');
+                        document.querySelector('.modal-backdrop').remove();
+                        document.body.style.overflow = 'auto';
+                    }
+                    // Reset button for next time
+                    setTimeout(() => {
+                        btn.innerHTML = '<i class="fas fa-paper-plane me-1"></i> Submit Rating';
+                        btn.disabled = false;
+                    }, 500);
+                }, 2000);
+            } else {
+                messageDiv.innerHTML = `<div class="alert alert-danger py-2 mt-2">❌ ${data.error || 'Something went wrong'}</div>`;
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane me-1"></i> Try Again';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            messageDiv.innerHTML = `<div class="alert alert-danger py-2 mt-2">❌ Network error. Please try again.</div>`;
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane me-1"></i> Submit Rating';
+        });
+    }
+    
+    function getCSRFToken() {
+        const cookieValue = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrftoken='))
+            ?.split('=')[1];
+        return cookieValue || '';
+    }
+    
     function filterGreenQueue() {
         const stationSection = document.getElementById('stations');
         if (stationSection) {
             stationSection.scrollIntoView({ behavior: 'smooth' });
         }
-
+        
         const cols = document.querySelectorAll('.station-item-col');
         cols.forEach(col => {
             const hasGreenBadge = col.querySelector('.status-green-badge');
@@ -248,7 +353,7 @@
             }
         });
     }
-
+    
     function resetFilter() {
         const cols = document.querySelectorAll('.station-item-col');
         cols.forEach(col => {
@@ -256,4 +361,5 @@
         });
     }
 </script>
+
 {% endblock %}

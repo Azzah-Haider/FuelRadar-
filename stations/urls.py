@@ -21,4 +21,8 @@ urlpatterns = [
     path('api/search/', views.search_stations, name='search_stations'),
     path('api/update-queue/', views.update_queue_ajax, name='update_queue_ajax'),
     path('api/update-price/', views.update_price_ajax, name='update_price_ajax'),
+
+     # Rating URLs
+    path('api/rate/', views.rate_station_ajax, name='rate_station_ajax'),
+    path('api/get-rating/<int:station_id>/', views.get_station_rating, name='get_station_rating'),
 ]

@@ -1,122 +1,230 @@
 {% extends 'base.html' %}
 
+{% block title %}Admin Dashboard - FuelRadar{% endblock %}
+
 {% block content %}
-<div class="row">
-    <div class="col-12">
-        <h2 class="mb-4"><i class="fas fa-chart-line"></i> Admin Dashboard</h2>
-    </div>
-</div>
+<style>
+    .admin-hover-card {
+        border: 1px solid #e2e8f0 !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-top: 5px solid #116963 !important;
+        border-radius: 16px !important;
+    }
+    .admin-hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(17, 105, 99, 0.18) !important;
+        border-color: #116963 !important;
+    }
+    .btn-custom-primary {
+        background-color: #116963;
+        color: white;
+        border: none;
+    }
+    .btn-custom-primary:hover {
+        background-color: #0d524d;
+        color: white;
+    }
+    .btn-custom-secondary {
+        background-color: #f1f5f9;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+    }
+    .btn-custom-secondary:hover {
+        background-color: #e2e8f0;
+        color: #1e293b;
+    }
+    .stat-card {
+        border: 1px solid #e2e8f0 !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-top: 5px solid #116963 !important;
+        border-radius: 16px !important;
+        background: white;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(17, 105, 99, 0.18) !important;
+        border-color: #116963 !important;
+    }
+    .list-item-admin {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    .list-item-admin:last-child {
+        border-bottom: none;
+    }
+</style>
 
-<!-- Stats Cards -->
-<div class="row g-4 mb-4">
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
-                <i class="fas fa-users" style="font-size: 2.5rem; color: #3498db;"></i>
-                <h3 class="mt-2">{{ total_users }}</h3>
-                <p class="text-muted">Total Users</p>
-            </div>
+<div class="container py-4">
+    <!-- Header Banner -->
+    <div class="d-flex justify-content-between align-items-center mb-4 p-4 text-white rounded-4 shadow-sm" style="background-color: #116963;">
+        <div>
+            <h2 class="fw-bold mb-1">Welcome, {{ request.user.username }} 👋</h2>
+            <p class="mb-0 opacity-75">Admin Dashboard - Manage the entire platform</p>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
-                <i class="fas fa-gas-pump" style="font-size: 2.5rem; color: #2ecc71;"></i>
-                <h3 class="mt-2">{{ total_stations }}</h3>
-                <p class="text-muted">Total Stations</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
-                <i class="fas fa-clock" style="font-size: 2.5rem; color: #f39c12;"></i>
-                <h3 class="mt-2">{{ pending_stations }}</h3>
-                <p class="text-muted">Pending Approval</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
-                <i class="fas fa-money-bill" style="font-size: 2.5rem; color: #e74c3c;"></i>
-                <h3 class="mt-2">{{ total_fuel_prices }}</h3>
-                <p class="text-muted">Fuel Prices</p>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Recent Stations -->
-<div class="row">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-clock"></i> Recent Stations
+    <!-- Quick Stats Section -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card stat-card text-center p-3">
+                <div class="mb-2 fs-3" style="color: #3B82F6;"><i class="fas fa-users"></i></div>
+                <h6 class="text-muted fw-normal mb-1">Total Users</h6>
+                <h3 class="fw-bold mb-0" style="color: #116963;">{{ total_users }}</h3>
             </div>
-            <div class="card-body">
-                {% if recent_stations %}
-                    <ul class="list-group list-group-flush">
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card text-center p-3">
+                <div class="mb-2 fs-3" style="color: #10B981;"><i class="fas fa-gas-pump"></i></div>
+                <h6 class="text-muted fw-normal mb-1">Total Stations</h6>
+                <h3 class="fw-bold mb-0" style="color: #116963;">{{ total_stations }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card text-center p-3">
+                <div class="mb-2 fs-3" style="color: #F59E0B;"><i class="fas fa-clock"></i></div>
+                <h6 class="text-muted fw-normal mb-1">Pending Approval</h6>
+                <h3 class="fw-bold mb-0" style="color: #116963;">{{ pending_stations }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card text-center p-3">
+                <div class="mb-2 fs-3" style="color: #EF4444;"><i class="fas fa-money-bill-wave"></i></div>
+                <h6 class="text-muted fw-normal mb-1">Fuel Prices</h6>
+                <h3 class="fw-bold mb-0" style="color: #116963;">{{ total_fuel_prices }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Action Banner -->
+    <div class="alert text-white rounded-4 shadow-sm p-4 d-flex justify-content-between align-items-center mb-4" style="background: linear-gradient(135deg, #116963, #10b981);">
+        <div>
+            <h5 class="fw-bold mb-1"><i class="fas fa-bolt text-warning me-2"></i>Admin Quick Actions</h5>
+            <p class="mb-0 opacity-75 small">Manage stations, users, and fuel prices from one place.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="/admin/stations/station/" class="btn btn-light rounded-pill px-3 fw-bold shadow-sm" style="color: #116963;">
+                <i class="fas fa-plus-circle me-1"></i> Stations
+            </a>
+            <a href="/admin/accounts/user/" class="btn btn-light rounded-pill px-3 fw-bold shadow-sm" style="color: #116963;">
+                <i class="fas fa-users me-1"></i> Users
+            </a>
+            <a href="/admin/stations/fuelprice/" class="btn btn-outline-light rounded-pill px-3 fw-bold">
+    <i class="fas fa-money-bill-wave me-1"></i> Prices
+</a>
+        </div>
+    </div>
+
+    <!-- Station List Header -->
+    <h4 class="fw-bold mb-3" style="color: #116963;" id="stations">Recent Activity</h4>
+
+    <div class="row g-4">
+        <!-- Recent Stations -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm rounded-4 overflow-hidden position-relative admin-hover-card">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="card-title fw-bold text-dark mb-0">
+                            <i class="fas fa-gas-pump me-2" style="color: #116963;"></i>Recent Stations
+                        </h5>
+                        <span class="badge rounded-pill px-3 py-2 fw-semibold" style="background-color: #d1fae5; color: #065f46;">
+                            {{ recent_stations|length }}
+                        </span>
+                    </div>
+                    
+                    {% if recent_stations %}
                         {% for station in recent_stations %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{ station.name }}
-                                <span class="badge {% if station.is_approved %}bg-success{% else %}bg-warning{% endif %}">
-                                    {% if station.is_approved %}Approved{% else %}Pending{% endif %}
+                            <div class="list-item-admin">
+                                <span class="fw-medium">{{ station.name }}</span>
+                                <span class="badge rounded-pill px-3 py-2 {% if station.is_approved %}bg-success{% else %}bg-warning{% endif %}">
+                                    {% if station.is_approved %}
+                                        <i class="fas fa-check-circle me-1"></i> Approved
+                                    {% else %}
+                                        <i class="fas fa-clock me-1"></i> Pending
+                                    {% endif %}
                                 </span>
-                            </li>
+                            </div>
                         {% endfor %}
-                    </ul>
-                {% else %}
-                    <p class="text-muted">No stations added yet.</p>
-                {% endif %}
+                    {% else %}
+                        <p class="text-muted text-center py-3">No stations added yet.</p>
+                    {% endif %}
+                </div>
             </div>
         </div>
-    </div>
-    
-    <!-- Recent Users -->
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-users"></i> Recent Users
-            </div>
-            <div class="card-body">
-                {% if recent_users %}
-                    <ul class="list-group list-group-flush">
-                        {% for user in recent_users %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{ user.username }}
-                                <span class="badge bg-info">{{ user.get_role_display }}</span>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p class="text-muted">No users registered yet.</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="row mt-4">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-cog"></i> Quick Actions
-            </div>
-            <div class="card-body">
-                <div class="d-flex gap-3 flex-wrap">
-                    <a href="/admin/stations/station/" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Manage Stations
-                    </a>
-                    <a href="/admin/stations/fuelprice/" class="btn btn-success">
-                        <i class="fas fa-plus"></i> Manage Fuel Prices
-                    </a>
-                    <a href="/admin/accounts/user/" class="btn btn-info">
-                        <i class="fas fa-users"></i> Manage Users
-                    </a>
+        <!-- Recent Users -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm rounded-4 overflow-hidden position-relative admin-hover-card">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="card-title fw-bold text-dark mb-0">
+                            <i class="fas fa-users me-2" style="color: #116963;"></i>Recent Users
+                        </h5>
+                        <span class="badge rounded-pill px-3 py-2 fw-semibold" style="background-color: #d1fae5; color: #065f46;">
+                            {{ recent_users|length }}
+                        </span>
+                    </div>
+                    
+                    {% if recent_users %}
+                        {% for user in recent_users %}
+                            <div class="list-item-admin">
+                                <span class="fw-medium">{{ user.username }}</span>
+                                <span class="badge rounded-pill px-3 py-2" style="background-color: #116963; color: white;">
+                                    {{ user.get_role_display }}
+                                </span>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted text-center py-3">No users registered yet.</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Pending Approvals Alert -->
+    {% if pending_stations > 0 %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert rounded-4 shadow-sm p-4 d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border: none; color: #92400e;">
+                <div>
+                    <h6 class="fw-bold mb-1"><i class="fas fa-bell text-warning me-2"></i>Pending Approvals</h6>
+                    <p class="mb-0 small">There {{ pending_stations|pluralize:"is,are" }} <strong>{{ pending_stations }}</strong> station{{ pending_stations|pluralize }} waiting for your approval.</p>
+                </div>
+                <a href="/admin/stations/station/?is_approved__exact=0" class="btn btn-warning rounded-pill px-4 fw-bold shadow-sm">
+                    <i class="fas fa-check-circle me-1"></i> Review Now
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
+
+<script>
+    function filterGreenQueue() {
+        const stationSection = document.getElementById('stations');
+        if (stationSection) {
+            stationSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        const cols = document.querySelectorAll('.station-item-col');
+        cols.forEach(col => {
+            const hasGreenBadge = col.querySelector('.status-green-badge');
+            if (hasGreenBadge) {
+                col.style.display = 'block';
+            } else {
+                col.style.display = 'none';
+            }
+        });
+    }
+    
+    function resetFilter() {
+        const cols = document.querySelectorAll('.station-item-col');
+        cols.forEach(col => {
+            col.style.display = 'block';
+        });
+    }
+</script>
 {% endblock %}

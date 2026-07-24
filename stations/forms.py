@@ -1,5 +1,6 @@
 from django import forms
 from .models import Station, FuelPrice, QueueStatus
+from .models import StationRating
 
 class StationForm(forms.ModelForm):
     class Meta:
@@ -30,4 +31,13 @@ class QueueStatusForm(forms.ModelForm):
         widgets = {
             'status': forms.Select(attrs={'class': 'form-control'}),
             'queue_length': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Number of cars waiting', 'min': '0'}),
+        }
+
+class StationRatingForm(forms.ModelForm):
+    class Meta:
+        model = StationRating
+        fields = ['rating', 'comment']
+        widgets = {
+            'rating': forms.Select(attrs={'class': 'form-control'}),
+            'comment': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Share your experience...'}),
         }
