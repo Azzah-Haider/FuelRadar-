@@ -20,14 +20,6 @@ class FuelPriceAdmin(admin.ModelAdmin):
     search_fields = ['station__name']
     ordering = ['-updated_at']
 
-@admin.register(QueueStatus)
-class QueueStatusAdmin(admin.ModelAdmin):
-    list_display = ['station', 'status', 'queue_length', 'updated_at']
-    list_filter = ['status', 'updated_at']
-    search_fields = ['station__name']
-    ordering = ['-updated_at']
-
-
 @admin.register(StationRating)
 class StationRatingAdmin(admin.ModelAdmin):
     list_display = ['station', 'user', 'rating', 'created_at']

@@ -16,6 +16,13 @@ function getCSRFToken() {
 // ============================================
 
 function performSearch() {
+    // Don't rebuild the station list while a map modal is open it would interrupt the user and force the modal closed.
+    const openModal = document.querySelector('.modal.show');
+    if (openModal) {
+        console.log('⏸️ Skipping refresh — a modal is currently open');
+        return;
+    }
+    
     const query = document.getElementById('searchInput')?.value || '';
     const city = document.getElementById('cityFilter')?.value || '';
     
@@ -44,6 +51,21 @@ function updateStationCardsInstant(data) {
         console.error('❌ stationContainer not found!');
         return;
     }
+
+    // Clean up any existing map modals before rebuilding the container,
+    // so refreshes don't leave orphaned backdrops or duplicate instances.
+    container.querySelectorAll('[id^="mapModal"]').forEach(function (modalEl) {
+        const existing = bootstrap.Modal.getInstance(modalEl);
+        if (existing) {
+            existing.dispose();
+        }
+    });
+    document.querySelectorAll('.modal-backdrop').forEach(function (backdrop) {
+        backdrop.remove();
+    });
+    document.body.classList.remove('modal-open');
+    document.body.style.removeProperty('overflow');
+    document.body.style.removeProperty('padding-right');
     
     console.log('🔄 Updating station cards with', data.count, 'stations');
     
@@ -129,6 +151,19 @@ function updateStationCardsInstant(data) {
                 <button type="button" class="btn btn-teal btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#mapModal${station.id}">
                     <i class="bi bi-geo-alt"></i> View Location
                 </button>
+                <div class="modal fade" id="mapModal${station.id}" tabindex="-1" data-bs-focus="false">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header card-teal-header">
+                                <h5 class="modal-title">${station.name}</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body p-0">
+                                <iframe src="${station.map_link}" width="100%" height="400" style="border:0;" loading="lazy"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             `;
         }
         
@@ -162,6 +197,11 @@ function updateStationCardsInstant(data) {
     
     html += '</div>';
     container.innerHTML = html;
+    
+    // Re-initialize map modals so they open without the focus-trap shaking bug
+    document.querySelectorAll('[id^="mapModal"]').forEach(function (modalEl) {
+        new bootstrap.Modal(modalEl, { focus: false });
+    });
     
     // Update count
     const countBadge = document.getElementById('stationCount');
@@ -200,7 +240,7 @@ function startAutoRefresh() {
 }
 
 // ============================================
-// 5. QUEUE STATUS UPDATE (AJAX)
+// 4. QUEUE STATUS UPDATE (AJAX)
 // ============================================
 
 function updateQueueStatus(status, queueLength, stationId) {
@@ -271,7 +311,7 @@ function updateQueueDisplay(data, stationId) {
 }
 
 // ============================================
-// 6. NOTIFICATIONS
+// 5. NOTIFICATIONS
 // ============================================
 
 function showNotification(type, message) {
@@ -311,7 +351,7 @@ function showNotification(type, message) {
 }
 
 // ============================================
-// 4. INITIALIZE (on page load)
+// 6. INITIALIZE (on page load)
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
