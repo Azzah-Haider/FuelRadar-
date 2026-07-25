@@ -40,7 +40,7 @@ Version Control: GitHub
 
 **Core Features**
 
-Role-based auth (Station Manager / Admin)
+Role-based auth (Admin / Station Manager / Driver)
 
 Full CRUD on stations, fuel status, and queue status
 
