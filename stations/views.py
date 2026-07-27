@@ -158,10 +158,17 @@ def add_fuel_price(request):
     if request.method == 'POST':
         form = FuelPriceForm(request.POST)
         if form.is_valid():
-            fuel_price = form.save(commit=False)
-            fuel_price.station = station
-            fuel_price.save()
-            messages.success(request, f'Fuel price added to {station.name}!')
+            fuel_type = form.cleaned_data['fuel_type']
+            price = form.cleaned_data['price']
+            fuel_price, created = FuelPrice.objects.update_or_create(
+                station=station,
+                fuel_type=fuel_type,
+                defaults={'price': price}
+            )
+            if created:
+                messages.success(request, f'Fuel price added to {station.name}!')
+            else:
+                messages.success(request, f'{fuel_price.get_fuel_type_display()} price updated for {station.name}!')
             return redirect('manager_dashboard')
         else:
             messages.error(request, 'Please correct the errors below.')

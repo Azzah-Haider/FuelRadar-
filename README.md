@@ -14,7 +14,7 @@ Lugain Kamal (21-320) — CS
 
 Drivers waste time and fuel searching for open, affordable, low-queue gas stations.
 
-Station owners have no easy way to broadcast live prices and traffic to customers. 
+Station owners have no easy way to broadcast live prices and traffic to customers.
 
 FuelRadar connects the two with real-time updates.
 
@@ -44,7 +44,7 @@ Role-based auth (Admin / Station Manager / Driver)
 
 Full CRUD on stations, fuel status, and queue status
 
-Live AJAX search & filtering by city/fuel availability
+Live AJAX search \& filtering by city/fuel availability
 
 Real-time station status updates without page reload
 
@@ -56,10 +56,35 @@ cd FuelRadar-
 
 python -m venv venv
 
-venv\Scripts\activate
+venv\\Scripts\\activate
 
 pip install -r requirements.txt
 
 python manage.py migrate
 
 python manage.py runserver
+
+**Demo Data**
+
+A fixture with sample data (stations, fuel prices, queue statuses, and driver ratings) is included for testing and evaluation.
+
+After running `python manage.py migrate`, load it with: **python manage.py loaddata fixtures/demo\_data.json**
+
+**Demo accounts** (all use password: "Fuelradar@2026"):
+
+| Username | Role |
+
+
+
+| demo\_Admin | Admin |
+
+| demo\_Manager1 | Station Manager |
+
+| demo\_Manager2 | Station Manager |
+
+| demo\_Driver1 | Driver |
+
+| demo\_Driver2 | Driver |
+
+| demo\_Driver3 | Driver |
+

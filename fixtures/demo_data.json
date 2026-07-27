@@ -1,0 +1,792 @@
+[
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$6hnSRWvMf3uUuRPlGI8yg4$gEof1aESIJo77bT0mOM2H3RBXD/V7jlwb+VWopF4GOw=",
+    "last_login": "2026-07-27T13:00:27.089Z",
+    "is_superuser": true,
+    "username": "demo_Admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@fuelradar.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-07-27T12:00:20.641Z",
+    "role": "admin",
+    "phone": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$L3fqc5VQIS1g0MgknJHbkq$RuHeqXuVkvaJew8sg5YBDRyGekbGmBVVb5HP0S5XJ5Q=",
+    "last_login": "2026-07-27T13:16:29.353Z",
+    "is_superuser": false,
+    "username": "demo_Manager1",
+    "first_name": "",
+    "last_name": "",
+    "email": "manager1@fuelradar.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-07-27T12:00:21.548Z",
+    "role": "manager",
+    "phone": "0912345678",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$CvLryfprB6PRnGp7NGQ1BO$0vGEqhS/cABAllSYt2fdB0oZHW5jlXdwFDSZMrYTK6s=",
+    "last_login": "2026-07-27T13:06:26.177Z",
+    "is_superuser": false,
+    "username": "demo_Manager2",
+    "first_name": "",
+    "last_name": "",
+    "email": "manager2@fuelradar.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-07-27T12:00:22.407Z",
+    "role": "manager",
+    "phone": "0912345678",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$QYwMppiOR9Uxj7Quswn924$9WEEs7oB5NklkSZsbjMvn8gXe5QuiJ5bpL1cXSZaCWY=",
+    "last_login": "2026-07-27T13:18:48.704Z",
+    "is_superuser": false,
+    "username": "demo_Driver1",
+    "first_name": "",
+    "last_name": "",
+    "email": "driver1@fuelradar.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-07-27T12:00:23.348Z",
+    "role": "driver",
+    "phone": "0912345678",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$1JKnh8OHANi2czlvZEGN87$HC92fQoMPpmTJxgYL88IkHhRsYqiWJDGjD1vWoCO0+E=",
+    "last_login": "2026-07-27T13:21:25.511Z",
+    "is_superuser": false,
+    "username": "demo_Driver2",
+    "first_name": "",
+    "last_name": "",
+    "email": "driver2@fuelradar.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-07-27T12:00:24.248Z",
+    "role": "driver",
+    "phone": "0912345678",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$5JO7oF4oWh5A1szNq9ZaJT$k5Ovt4JG4Dsy64tBgCLpOEh9SX/DVrNFphmyIz7pC78=",
+    "last_login": "2026-07-27T13:26:35.606Z",
+    "is_superuser": false,
+    "username": "demo_Driver3",
+    "first_name": "",
+    "last_name": "",
+    "email": "driver3@fuelradar.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-07-27T12:00:25.191Z",
+    "role": "driver",
+    "phone": "0912345678",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "stations.station",
+  "pk": 7,
+  "fields": {
+    "name": "National Petroleum Gas Station",
+    "location": "The Freedom Street",
+    "city": "Khartoum",
+    "manager": [
+      "demo_Manager1"
+    ],
+    "is_approved": true,
+    "operating_hours": "7:00 AM - 12:00 AM",
+    "services": "Car Wash, Air & Tire Service",
+    "contact_phone": "0912345678",
+    "map_link": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3843.457338971681!2d32.5260926!3d15.5671952!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x168e8fd2a7024b83%3A0xb8963d27b0064f03!2sNational%20Petroleum%20Gas%20Station!5e0!3m2!1sen!2sae!4v1785155097971!5m2!1sen!2sae",
+    "created_at": "2026-07-27T12:26:41.803Z",
+    "updated_at": "2026-07-27T12:26:41.803Z"
+  }
+},
+{
+  "model": "stations.station",
+  "pk": 8,
+  "fields": {
+    "name": "Nepta Gas Station",
+    "location": "Bashir Elnefeidi Street",
+    "city": "Khartoum",
+    "manager": [
+      "demo_Manager1"
+    ],
+    "is_approved": true,
+    "operating_hours": "6:30 AM - 11:45 PM",
+    "services": "ATM, Restroom",
+    "contact_phone": "0912345678",
+    "map_link": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d480.4594728457886!2d32.5823453!3d15.5555019!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x168e9055afe97647%3A0x486002bdd28e564b!2sNepta%20Gas%20Station!5e0!3m2!1sen!2sae!4v1785155700040!5m2!1sen!2sae",
+    "created_at": "2026-07-27T12:38:26.862Z",
+    "updated_at": "2026-07-27T13:00:13.551Z"
+  }
+},
+{
+  "model": "stations.station",
+  "pk": 9,
+  "fields": {
+    "name": "Oil Energy petrol station",
+    "location": "Al-Inqaz Street",
+    "city": "Bahri",
+    "manager": [
+      "demo_Manager1"
+    ],
+    "is_approved": true,
+    "operating_hours": "8:00 AM - 10:00 PM",
+    "services": "Car Wash",
+    "contact_phone": "0912345678",
+    "map_link": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3841.2685235301797!2d32.5550965!3d15.683893099999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x168e93fd48e004a5%3A0x4c0248dfaa064a60!2sOil%20Energy%20petrol%20station!5e0!3m2!1sen!2sae!4v1785156328006!5m2!1sen!2sae",
+    "created_at": "2026-07-27T12:45:47.453Z",
+    "updated_at": "2026-07-27T12:45:47.453Z"
+  }
+},
+{
+  "model": "stations.station",
+  "pk": 10,
+  "fields": {
+    "name": "Aman Petroleum",
+    "location": "Al Mohandiseen",
+    "city": "Omdurman",
+    "manager": [
+      "demo_Manager1"
+    ],
+    "is_approved": true,
+    "operating_hours": "Open 24 hours",
+    "services": "Air & Tire Service",
+    "contact_phone": "0912345678",
+    "map_link": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3842.6985500098845!2d32.4660426!3d15.607746800000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x168e8ebcdc666495%3A0x152015c2d9741300!2sAman%20Petroleum!5e0!3m2!1sen!2sae!4v1785156584072!5m2!1sen!2sae",
+    "created_at": "2026-07-27T12:50:00.755Z",
+    "updated_at": "2026-07-27T12:50:00.755Z"
+  }
+},
+{
+  "model": "stations.station",
+  "pk": 11,
+  "fields": {
+    "name": "Petrola Gas Station",
+    "location": "Al Zaim Al Azhari Road",
+    "city": "Omdurman",
+    "manager": [
+      "demo_Manager2"
+    ],
+    "is_approved": true,
+    "operating_hours": "6:30 AM - 1:30 AM",
+    "services": "Restaurant, Car Wash",
+    "contact_phone": "0912345678",
+    "map_link": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3841.9786861672696!2d32.5006002!3d15.646123399999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x168e8dafb2ebba5b%3A0xc925e4e09c1c7f18!2sPetrola%20Gas%20Station!5e0!3m2!1sen!2sae!4v1785156770091!5m2!1sen!2sae",
+    "created_at": "2026-07-27T12:53:06.885Z",
+    "updated_at": "2026-07-27T12:53:06.885Z"
+  }
+},
+{
+  "model": "stations.station",
+  "pk": 12,
+  "fields": {
+    "name": "Nawafil Gas Station",
+    "location": "Wad Nubawi",
+    "city": "Omdurman",
+    "manager": [
+      "demo_Manager2"
+    ],
+    "is_approved": true,
+    "operating_hours": "7:00 AM - 11:30 PM",
+    "services": "Car Wash",
+    "contact_phone": "0912345678",
+    "map_link": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3841.7309186305215!2d32.4893028!3d15.659310900000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x168e8cfe55c51a4b%3A0x7051c27a04294c20!2sNawafil%20Gas%20Station!5e0!3m2!1sen!2sae!4v1785156878700!5m2!1sen!2sae",
+    "created_at": "2026-07-27T12:54:57.103Z",
+    "updated_at": "2026-07-27T12:54:57.103Z"
+  }
+},
+{
+  "model": "stations.station",
+  "pk": 13,
+  "fields": {
+    "name": "Matthew Petrol Station",
+    "location": "Al Shaheed Karar Street",
+    "city": "Khartoum",
+    "manager": [
+      "demo_Manager2"
+    ],
+    "is_approved": true,
+    "operating_hours": "6:00 AM - 12:00 AM",
+    "services": "ATM",
+    "contact_phone": "0912345678",
+    "map_link": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3844.2803894514927!2d32.4974312!3d15.5230925!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x168e857988936cbb%3A0x57586e277e934dcc!2sMatthew%20Petrol%20Station!5e0!3m2!1sen!2sae!4v1785157057454!5m2!1sen!2sae",
+    "created_at": "2026-07-27T12:57:56.412Z",
+    "updated_at": "2026-07-27T12:57:56.412Z"
+  }
+},
+{
+  "model": "stations.station",
+  "pk": 14,
+  "fields": {
+    "name": "Bee Petroleum Company",
+    "location": "Azhari Block 34",
+    "city": "Khartoum",
+    "manager": [
+      "demo_Manager2"
+    ],
+    "is_approved": true,
+    "operating_hours": "8:00 AM - 11:00 PM",
+    "services": "Car Wash",
+    "contact_phone": "0912345678",
+    "map_link": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3844.503786321165!2d32.5792065!3d15.5111008!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x168e9a86e4fccf61%3A0xe4edd65b5bd503f5!2sBee%20Petroleum%20Company!5e0!3m2!1sen!2sae!4v1785157171807!5m2!1sen!2sae",
+    "created_at": "2026-07-27T12:59:47.216Z",
+    "updated_at": "2026-07-27T12:59:47.216Z"
+  }
+},
+{
+  "model": "stations.fuelprice",
+  "pk": 5,
+  "fields": {
+    "station": 10,
+    "fuel_type": "petrol",
+    "price": "5000.00",
+    "updated_at": "2026-07-27T13:01:50.189Z"
+  }
+},
+{
+  "model": "stations.fuelprice",
+  "pk": 6,
+  "fields": {
+    "station": 10,
+    "fuel_type": "gas",
+    "price": "8000.00",
+    "updated_at": "2026-07-27T13:01:58.206Z"
+  }
+},
+{
+  "model": "stations.fuelprice",
+  "pk": 7,
+  "fields": {
+    "station": 7,
+    "fuel_type": "petrol",
+    "price": "4500.00",
+    "updated_at": "2026-07-27T13:02:07.329Z"
+  }
+},
+{
+  "model": "stations.fuelprice",
+  "pk": 8,
+  "fields": {
+    "station": 7,
+    "fuel_type": "gas",
+    "price": "7500.00",
+    "updated_at": "2026-07-27T13:02:23.629Z"
+  }
+},
+{
+  "model": "stations.fuelprice",
+  "pk": 9,
+  "fields": {
+    "station": 8,
+    "fuel_type": "petrol",
+    "price": "4000.00",
+    "updated_at": "2026-07-27T13:02:45.120Z"
+  }
+},
+{
+  "model": "stations.fuelprice",
+  "pk": 10,
+  "fields": {
+    "station": 8,
+    "fuel_type": "gas",
+    "price": "6000.00",
+    "updated_at": "2026-07-27T13:02:54.190Z"
+  }
+},
+{
+  "model": "stations.fuelprice",
+  "pk": 11,
+  "fields": {
+    "station": 9,
+    "fuel_type": "petrol",
+    "price": "6000.00",
+    "updated_at": "2026-07-27T13:03:09.468Z"
+  }
+},
+{
+  "model": "stations.fuelprice",
+  "pk": 12,
+  "fields": {
+    "station": 9,
+    "fuel_type": "gas",
+    "price": "5500.00",
+    "updated_at": "2026-07-27T13:03:26.059Z"
+  }
+},
+{
+  "model": "stations.fuelprice",
+  "pk": 13,
+  "fields": {
+    "station": 14,
+    "fuel_type": "petrol",
+    "price": "6000.00",
+    "updated_at": "2026-07-27T13:06:36.260Z"
+  }
+},
+{
+  "model": "stations.fuelprice",
+  "pk": 14,
+  "fields": {
+    "station": 11,
+    "fuel_type": "gas",
+    "price": "7000.00",
+    "updated_at": "2026-07-27T13:06:49.588Z"
+  }
+},
+{
+  "model": "stations.fuelprice",
+  "pk": 15,
+  "fields": {
+    "station": 13,
+    "fuel_type": "petrol",
+    "price": "6500.00",
+    "updated_at": "2026-07-27T13:06:57.543Z"
+  }
+},
+{
+  "model": "stations.fuelprice",
+  "pk": 16,
+  "fields": {
+    "station": 13,
+    "fuel_type": "gas",
+    "price": "7500.00",
+    "updated_at": "2026-07-27T13:07:04.549Z"
+  }
+},
+{
+  "model": "stations.fuelprice",
+  "pk": 17,
+  "fields": {
+    "station": 12,
+    "fuel_type": "petrol",
+    "price": "5500.00",
+    "updated_at": "2026-07-27T13:13:58.268Z"
+  }
+},
+{
+  "model": "stations.fuelprice",
+  "pk": 18,
+  "fields": {
+    "station": 12,
+    "fuel_type": "gas",
+    "price": "7000.00",
+    "updated_at": "2026-07-27T13:07:29.608Z"
+  }
+},
+{
+  "model": "stations.queuestatus",
+  "pk": 7,
+  "fields": {
+    "station": 10,
+    "status": "red",
+    "queue_length": 11,
+    "updated_at": "2026-07-27T13:16:38.104Z",
+    "last_updated_by": [
+      "demo_Manager1"
+    ]
+  }
+},
+{
+  "model": "stations.queuestatus",
+  "pk": 8,
+  "fields": {
+    "station": 7,
+    "status": "green",
+    "queue_length": 3,
+    "updated_at": "2026-07-27T13:03:49.522Z",
+    "last_updated_by": [
+      "demo_Manager1"
+    ]
+  }
+},
+{
+  "model": "stations.queuestatus",
+  "pk": 9,
+  "fields": {
+    "station": 8,
+    "status": "red",
+    "queue_length": 10,
+    "updated_at": "2026-07-27T13:03:59.964Z",
+    "last_updated_by": [
+      "demo_Manager1"
+    ]
+  }
+},
+{
+  "model": "stations.queuestatus",
+  "pk": 10,
+  "fields": {
+    "station": 9,
+    "status": "yellow",
+    "queue_length": 7,
+    "updated_at": "2026-07-27T13:04:13.169Z",
+    "last_updated_by": [
+      "demo_Manager1"
+    ]
+  }
+},
+{
+  "model": "stations.queuestatus",
+  "pk": 11,
+  "fields": {
+    "station": 14,
+    "status": "yellow",
+    "queue_length": 6,
+    "updated_at": "2026-07-27T13:14:27.397Z",
+    "last_updated_by": [
+      "demo_Manager2"
+    ]
+  }
+},
+{
+  "model": "stations.queuestatus",
+  "pk": 12,
+  "fields": {
+    "station": 13,
+    "status": "green",
+    "queue_length": 2,
+    "updated_at": "2026-07-27T13:14:36.150Z",
+    "last_updated_by": [
+      "demo_Manager2"
+    ]
+  }
+},
+{
+  "model": "stations.queuestatus",
+  "pk": 13,
+  "fields": {
+    "station": 12,
+    "status": "yellow",
+    "queue_length": 5,
+    "updated_at": "2026-07-27T13:15:29.861Z",
+    "last_updated_by": [
+      "demo_Manager2"
+    ]
+  }
+},
+{
+  "model": "stations.queuestatus",
+  "pk": 14,
+  "fields": {
+    "station": 11,
+    "status": "green",
+    "queue_length": 1,
+    "updated_at": "2026-07-27T13:16:04.747Z",
+    "last_updated_by": [
+      "demo_Manager2"
+    ]
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 5,
+  "fields": {
+    "station": 10,
+    "user": [
+      "demo_Driver1"
+    ],
+    "rating": 4,
+    "comment": "Good Service",
+    "created_at": "2026-07-27T13:19:11.940Z",
+    "updated_at": "2026-07-27T13:19:11.940Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 6,
+  "fields": {
+    "station": 14,
+    "user": [
+      "demo_Driver1"
+    ],
+    "rating": 5,
+    "comment": "Fast service",
+    "created_at": "2026-07-27T13:19:37.362Z",
+    "updated_at": "2026-07-27T13:19:46.329Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 7,
+  "fields": {
+    "station": 13,
+    "user": [
+      "demo_Driver1"
+    ],
+    "rating": 2,
+    "comment": "Non-friendly staff\n",
+    "created_at": "2026-07-27T13:20:12.753Z",
+    "updated_at": "2026-07-27T13:20:12.753Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 8,
+  "fields": {
+    "station": 7,
+    "user": [
+      "demo_Driver1"
+    ],
+    "rating": 3,
+    "comment": "Good prices",
+    "created_at": "2026-07-27T13:20:29.876Z",
+    "updated_at": "2026-07-27T13:20:29.876Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 9,
+  "fields": {
+    "station": 8,
+    "user": [
+      "demo_Driver1"
+    ],
+    "rating": 1,
+    "comment": "Slow service.",
+    "created_at": "2026-07-27T13:20:46.003Z",
+    "updated_at": "2026-07-27T13:20:46.003Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 10,
+  "fields": {
+    "station": 9,
+    "user": [
+      "demo_Driver1"
+    ],
+    "rating": 5,
+    "comment": "Best prices in Bahri.",
+    "created_at": "2026-07-27T13:21:01.550Z",
+    "updated_at": "2026-07-27T13:21:01.550Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 11,
+  "fields": {
+    "station": 10,
+    "user": [
+      "demo_Driver2"
+    ],
+    "rating": 3,
+    "comment": "",
+    "created_at": "2026-07-27T13:21:51.794Z",
+    "updated_at": "2026-07-27T13:21:51.795Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 12,
+  "fields": {
+    "station": 12,
+    "user": [
+      "demo_Driver2"
+    ],
+    "rating": 5,
+    "comment": "Respectful staff.",
+    "created_at": "2026-07-27T13:22:13.294Z",
+    "updated_at": "2026-07-27T13:22:13.294Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 13,
+  "fields": {
+    "station": 11,
+    "user": [
+      "demo_Driver2"
+    ],
+    "rating": 3,
+    "comment": "Average experience overall.",
+    "created_at": "2026-07-27T13:23:54.904Z",
+    "updated_at": "2026-07-27T13:23:54.905Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 14,
+  "fields": {
+    "station": 13,
+    "user": [
+      "demo_Driver2"
+    ],
+    "rating": 4,
+    "comment": "Quick and easy.",
+    "created_at": "2026-07-27T13:24:23.608Z",
+    "updated_at": "2026-07-27T13:24:23.608Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 15,
+  "fields": {
+    "station": 7,
+    "user": [
+      "demo_Driver2"
+    ],
+    "rating": 5,
+    "comment": "Fuel was available with no waiting.",
+    "created_at": "2026-07-27T13:24:51.990Z",
+    "updated_at": "2026-07-27T13:24:51.990Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 16,
+  "fields": {
+    "station": 8,
+    "user": [
+      "demo_Driver2"
+    ],
+    "rating": 3,
+    "comment": "Station was crowded but organized.",
+    "created_at": "2026-07-27T13:25:20.288Z",
+    "updated_at": "2026-07-27T13:25:20.288Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 17,
+  "fields": {
+    "station": 9,
+    "user": [
+      "demo_Driver2"
+    ],
+    "rating": 4,
+    "comment": "Prices were reasonable.",
+    "created_at": "2026-07-27T13:25:56.863Z",
+    "updated_at": "2026-07-27T13:25:56.863Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 18,
+  "fields": {
+    "station": 14,
+    "user": [
+      "demo_Driver3"
+    ],
+    "rating": 3,
+    "comment": "Clean station, but more pumps would help.",
+    "created_at": "2026-07-27T13:27:05.622Z",
+    "updated_at": "2026-07-27T13:27:05.622Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 19,
+  "fields": {
+    "station": 13,
+    "user": [
+      "demo_Driver3"
+    ],
+    "rating": 4,
+    "comment": "Reliable station, I always refuel here.",
+    "created_at": "2026-07-27T13:27:36.969Z",
+    "updated_at": "2026-07-27T13:27:36.970Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 20,
+  "fields": {
+    "station": 12,
+    "user": [
+      "demo_Driver3"
+    ],
+    "rating": 4,
+    "comment": "Service was good, nothing special.",
+    "created_at": "2026-07-27T13:28:18.936Z",
+    "updated_at": "2026-07-27T13:28:18.936Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 21,
+  "fields": {
+    "station": 7,
+    "user": [
+      "demo_Driver3"
+    ],
+    "rating": 3,
+    "comment": "Only a few pumps were working.",
+    "created_at": "2026-07-27T13:28:57.951Z",
+    "updated_at": "2026-07-27T13:28:57.951Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 22,
+  "fields": {
+    "station": 8,
+    "user": [
+      "demo_Driver3"
+    ],
+    "rating": 4,
+    "comment": "Station was crowded and difficult to enter.",
+    "created_at": "2026-07-27T13:29:23.940Z",
+    "updated_at": "2026-07-27T13:29:23.940Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 23,
+  "fields": {
+    "station": 11,
+    "user": [
+      "demo_Driver3"
+    ],
+    "rating": 5,
+    "comment": "The queue moved quickly.",
+    "created_at": "2026-07-27T13:29:47.043Z",
+    "updated_at": "2026-07-27T13:29:47.043Z"
+  }
+},
+{
+  "model": "stations.stationrating",
+  "pk": 24,
+  "fields": {
+    "station": 9,
+    "user": [
+      "demo_Driver3"
+    ],
+    "rating": 5,
+    "comment": "Clean station.",
+    "created_at": "2026-07-27T13:30:18.458Z",
+    "updated_at": "2026-07-27T13:30:18.458Z"
+  }
+}
+]
