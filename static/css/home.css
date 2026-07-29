@@ -1,0 +1,70 @@
+/* ============================================
+   HOME PAGE CUSTOM STYLES
+   ============================================ */
+
+/* Scrollable Station Container */
+#stationContainer {
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Custom Scrollbar Styling - Chrome, Edge, Safari */
+#stationContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+#stationContainer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+#stationContainer::-webkit-scrollbar-thumb {
+    background: #116963;
+    border-radius: 10px;
+}
+
+#stationContainer::-webkit-scrollbar-thumb:hover {
+    background: #0d524d;
+}
+
+/* Firefox Scrollbar */
+#stationContainer {
+    scrollbar-width: thin;
+    scrollbar-color: #116963 #f1f1f1;
+}
+
+/* Station Cards */
+.station-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.station-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(17, 105, 99, 0.15);
+    border-color: #116963;
+}
+
+.station-name {
+    font-weight: 700;
+    color: #1F2937;
+    font-size: 1.1rem;
+}
+
+.station-location {
+    color: #6B7280;
+    font-size: 0.9rem;
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
+}

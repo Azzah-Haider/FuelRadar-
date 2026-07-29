@@ -25,4 +25,8 @@ urlpatterns = [
      # Rating URLs
     path('api/rate/', views.rate_station_ajax, name='rate_station_ajax'),
     path('api/get-rating/<int:station_id>/', views.get_station_rating, name='get_station_rating'),
+
+     #  Comments URL 
+    path('api/comments/<int:station_id>/', views.get_station_comments, name='get_station_comments'),
+
 ]

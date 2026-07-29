@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
 {% block content %}
 <!-- Hero Section -->
 <div class="hero-section">
@@ -134,7 +140,7 @@
     <i class="bi bi-fuel-pump"></i> Available Stations 
     <span class="badge bg-white text-dark float-end" id="stationCount">{{ total_stations }} Stations</span>
 </div>
-            <div class="card-body" id="stationContainer">
+            <div class="card-body" id="stationContainer" style="max-height: 600px; overflow-y: auto; padding-right: 10px;">
                 {% if stations_with_details %}
                     <div class="row g-4">
                         {% for item in stations_with_details %}

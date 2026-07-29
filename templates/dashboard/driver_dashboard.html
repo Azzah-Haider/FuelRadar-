@@ -171,6 +171,9 @@
                             <button class="btn btn-custom-primary btn-sm w-100 rounded-pill fw-semibold shadow-sm" data-bs-toggle="modal" data-bs-target="#ratingModal{{ item.station.id }}">
                                 <i class="fas fa-star me-1"></i> Rate
                             </button>
+                              <button class="btn btn-custom-primary btn-sm w-100 rounded-pill fw-semibold shadow-sm" onclick="viewComments({{ item.station.id }})">
+        <i class="fas fa-comment-dots me-1"></i> Comments
+    </button>
                         </div>
                         {% if item.station.map_link %}
                             <button class="btn btn-custom-primary btn-sm w-100 rounded-pill fw-semibold mt-2" data-bs-toggle="modal" data-bs-target="#mapModal{{ item.station.id }}">
@@ -224,6 +227,29 @@
                     <i class="fas fa-paper-plane me-1"></i> Submit Rating
                 </button>
                 <div id="ratingMessage{{ item.station.id }}" class="mt-2"></div>
+            </div>
+        </div>
+    </div>
+</div> 
+                    <!-- Comments Modal -->
+<div class="modal fade" id="commentsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header text-white" style="background-color: #116963;">
+                <h5 class="modal-title fw-bold"><i class="fas fa-comments me-2"></i><span id="commentsStationName">Comments</span></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4" id="commentsBody">
+                <div class="text-center py-4">
+                    <div class="spinner-border text-teal" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-muted">Loading comments...</p>
+                </div>
+            </div>
+            <div class="modal-footer bg-light">
+                <span class="text-muted small" id="commentsCount"></span>
+                <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -360,6 +386,94 @@
             col.style.display = 'block';
         });
     }
+
+// ============================================
+// VIEW COMMENTS
+// ============================================
+
+function viewComments(stationId) {
+    const modal = document.getElementById('commentsModal');
+    const body = document.getElementById('commentsBody');
+    const stationName = document.getElementById('commentsStationName');
+    const countSpan = document.getElementById('commentsCount');
+    
+    // Show loading
+    body.innerHTML = `
+        <div class="text-center py-4">
+            <div class="spinner-border text-teal" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 text-muted">Loading comments...</p>
+        </div>
+    `;
+    
+    // Open modal
+    const modalInstance = new bootstrap.Modal(modal);
+    modalInstance.show();
+    
+    // Get CSRF token
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || getCSRFToken();
+    
+    fetch(`/stations/api/comments/${stationId}/`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Comments data:', data);  // Debug log
+        
+        if (data.error) {
+            throw new Error(data.error);
+        }
+        
+        stationName.textContent = data.station_name || 'Comments';
+        countSpan.textContent = `${data.total_comments || 0} comments`;
+        
+        if (data.comments && data.comments.length > 0) {
+            let html = '';
+            data.comments.forEach(function(comment) {
+                html += `
+                    <div class="border-bottom pb-3 mb-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <strong>${comment.username}</strong>
+                                <span class="text-warning ms-2">${comment.stars}</span>
+                            </div>
+                            <small class="text-muted">${comment.created_at}</small>
+                        </div>
+                        <p class="mb-1 mt-1">${comment.comment}</p>
+                    </div>
+                `;
+            });
+            body.innerHTML = html;
+        } else {
+            body.innerHTML = `
+                <div class="text-center py-4">
+                    <i class="fas fa-comment-slash" style="font-size: 3rem; color: #ccc;"></i>
+                    <p class="mt-2 text-muted">No comments yet. Be the first to leave a review!</p>
+                </div>
+            `;
+        }
+    })
+    .catch(error => {
+        console.error('Comments error:', error);
+        body.innerHTML = `
+            <div class="text-center py-4">
+                <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #EF4444;"></i>
+                <p class="mt-2 text-danger">Failed to load comments: ${error.message}</p>
+            </div>
+        `;
+    });
+}
+
 </script>
 
 {% endblock %}

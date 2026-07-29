@@ -510,3 +510,52 @@ def get_station_rating(request, station_id):
         'total_ratings': ratings.count(),
         'user_rating': user_rating
     })
+
+@login_required
+def get_station_comments(request, station_id):
+    """AJAX: Get all comments for a station"""
+    try:
+        station = get_object_or_404(Station, id=station_id)
+        
+        # Check access
+        if request.user.role == 'driver':
+            if not station.is_approved:
+                return JsonResponse({'error': 'Station not available'}, status=404)
+        elif request.user.role == 'manager':
+            if station.manager != request.user:
+                return JsonResponse({'error': 'Access denied'}, status=403)
+        else:
+            return JsonResponse({'error': 'Access denied'}, status=403)
+        
+        # Get all ratings with comments
+        ratings = StationRating.objects.filter(
+            station=station
+        ).exclude(
+            comment__isnull=True
+        ).exclude(
+            comment=''
+        ).order_by('-created_at')
+        
+        comments_data = []
+        for rating in ratings:
+            comments_data.append({
+                'username': rating.user.username,
+                'rating': rating.rating,
+                'comment': rating.comment,
+                'created_at': rating.created_at.strftime('%Y-%m-%d %H:%M'),
+                'stars': '⭐' * rating.rating
+            })
+        
+        return JsonResponse({
+            'station_name': station.name,
+            'total_comments': len(comments_data),
+            'comments': comments_data
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'error': str(e),
+            'station_name': 'Error',
+            'total_comments': 0,
+            'comments': []
+        }, status=500)
