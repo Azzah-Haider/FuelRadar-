@@ -88,3 +88,30 @@ After running `python manage.py migrate`, load it with: **python manage.py loadd
 
 | demo\_Driver3 | Driver |
 
+**Screenshots**
+**Homepage**
+![Home Page1](screenshots/Homepage1.png)
+![Home Page2](screenshots/Homepage2.png)
+![Home Page3](screenshots/Homepage3.png)
+
+**Login Page**
+![Login Page](screenshots/Login.png)
+
+**Admin Dashboard**
+![Admin Dashboard](screenshots/Admin_Dashboard.png)
+
+**Database Records**
+![Stations Record](screenshots/Stations_Record.png)
+![Users Records](screenshots/Users_Record.png)
+![Prices Records](screenshots/Prices_Record.png)
+
+**Manager Dashboard / CRUD Operations**
+![Manager Dashboard](screenshots/Manager_Dashboard - CRUD.png)
+![Create Station](screenshots/CreateStation.png)
+
+**User Dashboard**
+
+
+
+
+
