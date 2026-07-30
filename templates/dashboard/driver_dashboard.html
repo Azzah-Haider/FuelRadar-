@@ -87,6 +87,29 @@
         </div>
     </div>
 
+    <!-- Search & Filter -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold" style="color: #116963;"><i class="fas fa-search me-1"></i>Search by Name</label>
+                    <input type="text" id="driverSearchInput" class="form-control rounded-pill" placeholder="Type station name...">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold" style="color: #116963;"><i class="fas fa-city me-1"></i>Filter by City</label>
+                    <select id="driverCityFilter" class="form-select rounded-pill">
+                        <option value="">All Cities</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-custom-secondary w-100 rounded-pill fw-semibold" onclick="resetDriverSearch()">
+                        <i class="fas fa-times me-1"></i> Clear
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Station List Header -->
     <h4 class="fw-bold mb-3" style="color: #116963;" id="stations">Nearby Available Stations</h4>
 
@@ -122,7 +145,7 @@
                             <i class="fas fa-map-marker-alt text-danger me-1"></i>{{ item.station.location }}
                         </p>
                         <p class="text-muted small mb-3">
-                            <i class="fas fa-city text-primary me-1"></i>{{ item.station.city }}
+                            <i class="fas fa-city text-primary me-1"></i><span class="station-city-text">{{ item.station.city }}</span>
                         </p>
 
                         <!-- Queue Status Badge -->
@@ -386,6 +409,53 @@
             col.style.display = 'block';
         });
     }
+    
+    
+    // SEARCH & CITY FILTER 
+
+    function populateCityDropdown() {
+        const citySelect = document.getElementById('driverCityFilter');
+        const cities = new Set();
+        document.querySelectorAll('.station-city-text').forEach(el => {
+            const city = el.textContent.trim();
+            if (city) cities.add(city);
+        });
+        Array.from(cities).sort().forEach(city => {
+            const option = document.createElement('option');
+            option.value = city;
+            option.textContent = city;
+            citySelect.appendChild(option);
+        });
+    }
+
+    function applyDriverSearch() {
+        const query = document.getElementById('driverSearchInput').value.trim().toLowerCase();
+        const selectedCity = document.getElementById('driverCityFilter').value;
+
+        document.querySelectorAll('.station-item-col').forEach(col => {
+            const nameEl = col.querySelector('.card-title');
+            const cityEl = col.querySelector('.station-city-text');
+            const name = nameEl ? nameEl.textContent.trim().toLowerCase() : '';
+            const city = cityEl ? cityEl.textContent.trim() : '';
+
+            const matchesName = !query || name.includes(query);
+            const matchesCity = !selectedCity || city === selectedCity;
+
+            col.style.display = (matchesName && matchesCity) ? 'block' : 'none';
+        });
+    }
+
+    function resetDriverSearch() {
+        document.getElementById('driverSearchInput').value = '';
+        document.getElementById('driverCityFilter').value = '';
+        applyDriverSearch();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        populateCityDropdown();
+        document.getElementById('driverSearchInput').addEventListener('input', applyDriverSearch);
+        document.getElementById('driverCityFilter').addEventListener('change', applyDriverSearch);
+    });
 
 // ============================================
 // VIEW COMMENTS
