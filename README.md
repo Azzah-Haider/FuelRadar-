@@ -72,21 +72,21 @@ After running `python manage.py migrate`, load it with: **python manage.py loadd
 
 **Demo accounts** (all use password: "Fuelradar@2026"):
 
-| Username | Role |
+|    Username    |      Role       |
 
 
 
-| demo\_Admin | Admin |
+| demo\_Admin    |      Admin      |
 
 | demo\_Manager1 | Station Manager |
 
 | demo\_Manager2 | Station Manager |
 
-| demo\_Driver1 | Driver |
+| demo\_Driver1  |     Driver      |
 
-| demo\_Driver2 | Driver |
+| demo\_Driver2  |     Driver      |
 
-| demo\_Driver3 | Driver |
+| demo\_Driver3  |     Driver      |
 
 **Screenshots**
 
