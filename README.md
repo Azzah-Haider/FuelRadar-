@@ -111,7 +111,8 @@ After running `python manage.py migrate`, load it with: **python manage.py loadd
 ![Create Station](screenshots/CreateStation.png)
 
 **User Dashboard**
-![User Dashboard](screenshots/User_Dashboard.png)
+![User Dashboard1](screenshots/User_Dashboard1.png)
+![User Dashboard2](screenshots/User_Dashboard2.png)
 
 
 
